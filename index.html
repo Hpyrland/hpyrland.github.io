@@ -4,203 +4,401 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Hpyrland</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      background-color: #0d0d0d;
-      color: #e0e0e0;
-      font-family: 'Courier New', monospace;
+      background: #0a0a0f;
+      font-family: 'JetBrains Mono', monospace;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
       overflow: hidden;
+      color: #c9c9d4;
     }
 
-    /* Animated background grid */
-    body::before {
-      content: '';
+    /* Animated wallpaper gradient */
+    .wallpaper {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background-image:
-        linear-gradient(rgba(255,50,50,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,50,50,0.03) 1px, transparent 1px);
-      background-size: 40px 40px;
+      inset: 0;
+      background: linear-gradient(135deg, #0a0a0f 0%, #0f0a1a 40%, #0a0f1a 100%);
       z-index: 0;
     }
 
-    .container {
-      position: relative;
+    /* Matrix rain canvas */
+    #matrix {
+      position: fixed;
+      inset: 0;
       z-index: 1;
-      text-align: center;
-      padding: 2rem;
+      opacity: 0.15;
     }
 
-    .glitch {
-      font-size: 5rem;
-      font-weight: bold;
-      color: #fff;
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
+    /* Layout */
+    .desktop {
       position: relative;
-      animation: glitch 3s infinite;
+      z-index: 10;
+      width: 100vw;
+      height: 100vh;
+      padding: 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto 1fr auto;
+      gap: 1rem;
     }
 
-    .glitch::before,
-    .glitch::after {
-      content: attr(data-text);
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%;
+    /* Glass mixin */
+    .glass {
+      background: rgba(15, 10, 30, 0.55);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(157, 111, 255, 0.18);
+      border-radius: 12px;
     }
 
-    .glitch::before {
-      color: #ff3333;
-      animation: glitch-top 3s infinite;
-      clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+    /* Clock */
+    .clock-widget {
+      grid-column: 2;
+      grid-row: 1;
+      padding: 1.5rem 2rem;
+      text-align: right;
     }
 
-    .glitch::after {
-      color: #3333ff;
-      animation: glitch-bottom 3s infinite;
-      clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+    .clock-time {
+      font-size: 3.5rem;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: 0.05em;
     }
 
-    @keyframes glitch {
-      0%, 90%, 100% { transform: translate(0); }
-      92% { transform: translate(-2px, 1px); }
-      94% { transform: translate(2px, -1px); }
-      96% { transform: translate(-1px, 2px); }
-    }
-
-    @keyframes glitch-top {
-      0%, 90%, 100% { transform: translate(0); }
-      92% { transform: translate(3px, 0); }
-      94% { transform: translate(-3px, 0); }
-    }
-
-    @keyframes glitch-bottom {
-      0%, 90%, 100% { transform: translate(0); }
-      92% { transform: translate(-3px, 0); }
-      94% { transform: translate(3px, 0); }
-    }
-
-    .subtitle {
-      margin-top: 1rem;
-      font-size: 1rem;
-      color: #ff3333;
-      letter-spacing: 0.4em;
+    .clock-date {
+      font-size: 0.8rem;
+      color: #9d6fff;
+      letter-spacing: 0.3em;
       text-transform: uppercase;
-      opacity: 0;
-      animation: fadeIn 1s ease 0.5s forwards;
+      margin-top: 0.3rem;
     }
 
-    .divider {
-      width: 200px;
+    /* Fetch widget */
+    .fetch-widget {
+      grid-column: 1;
+      grid-row: 1 / 3;
+      padding: 1.5rem;
+    }
+
+    .fetch-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .arch-logo {
+      font-size: 2rem;
+      color: #9d6fff;
+    }
+
+    .fetch-user {
+      font-size: 1rem;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .fetch-host {
+      font-size: 0.75rem;
+      color: #9d6fff;
+      letter-spacing: 0.1em;
+    }
+
+    .fetch-divider {
       height: 1px;
-      background: linear-gradient(90deg, transparent, #ff3333, transparent);
-      margin: 2rem auto;
-      opacity: 0;
-      animation: fadeIn 1s ease 1s forwards;
+      background: linear-gradient(90deg, rgba(157,111,255,0.4), transparent);
+      margin-bottom: 1rem;
     }
 
-    .tags {
+    .fetch-row {
       display: flex;
       gap: 1rem;
-      justify-content: center;
+      margin-bottom: 0.5rem;
+      font-size: 0.78rem;
+      align-items: center;
+    }
+
+    .fetch-key {
+      color: #9d6fff;
+      min-width: 60px;
+      font-weight: 600;
+    }
+
+    .fetch-val {
+      color: #c9c9d4;
+    }
+
+    .fetch-colors {
+      display: flex;
+      gap: 5px;
+      margin-top: 1rem;
+    }
+
+    .color-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+    }
+
+    /* Cava widget */
+    .cava-widget {
+      grid-column: 1;
+      grid-row: 3;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 80px;
+    }
+
+    .bar {
+      flex: 1;
+      background: linear-gradient(to top, #9d6fff, #c9a0ff);
+      border-radius: 2px 2px 0 0;
+      animation: dance var(--dur) ease-in-out infinite alternate;
+      min-height: 4px;
+    }
+
+    @keyframes dance {
+      from { height: var(--min); }
+      to { height: var(--max); }
+    }
+
+    /* Info widget */
+    .info-widget {
+      grid-column: 2;
+      grid-row: 2 / 4;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .info-title {
+      font-size: 0.7rem;
+      color: #9d6fff;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+    }
+
+    .tag-grid {
+      display: flex;
       flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeIn 1s ease 1.5s forwards;
+      gap: 0.5rem;
     }
 
     .tag {
-      border: 1px solid #ff3333;
-      color: #ff3333;
-      padding: 0.4rem 1rem;
-      font-size: 0.8rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      transition: all 0.3s ease;
+      border: 1px solid rgba(157,111,255,0.3);
+      color: #9d6fff;
+      padding: 0.3rem 0.7rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      border-radius: 4px;
+      transition: all 0.2s;
       cursor: default;
     }
 
     .tag:hover {
-      background: #ff3333;
-      color: #0d0d0d;
+      background: rgba(157,111,255,0.15);
+      border-color: #9d6fff;
     }
 
-    .cursor {
-      display: inline-block;
-      width: 10px;
-      height: 1.2em;
-      background: #ff3333;
-      margin-left: 4px;
-      vertical-align: middle;
-      animation: blink 1s step-end infinite;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-
-    .terminal-line {
-      margin-top: 2.5rem;
-      font-size: 0.85rem;
-      color: #555;
-      opacity: 0;
-      animation: fadeIn 1s ease 2s forwards;
-    }
-
-    .terminal-line span {
-      color: #ff3333;
-    }
-
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
-
-    .social-links {
-      margin-top: 2rem;
+    .status-line {
+      font-size: 0.75rem;
+      color: #444460;
+      margin-top: auto;
       display: flex;
-      gap: 1.5rem;
-      justify-content: center;
-      opacity: 0;
-      animation: fadeIn 1s ease 2.5s forwards;
+      align-items: center;
+      gap: 0.5rem;
     }
 
-    .social-links a {
-      color: #555;
+    .pulse {
+      width: 6px; height: 6px;
+      background: #9d6fff;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 4px #9d6fff; }
+      50% { opacity: 0.3; box-shadow: none; }
+    }
+
+    .links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .links a {
+      color: #444460;
       text-decoration: none;
-      font-size: 0.8rem;
-      letter-spacing: 0.2em;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
-      transition: color 0.3s;
+      transition: color 0.2s;
     }
 
-    .social-links a:hover {
-      color: #ff3333;
+    .links a:hover { color: #9d6fff; }
+
+    /* Topbar */
+    .topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 36px;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(157,111,255,0.1);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      font-size: 0.72rem;
+      color: #444460;
     }
+
+    .topbar-left { display: flex; gap: 1rem; }
+    .topbar-right { display: flex; gap: 1rem; align-items: center; }
+    .topbar span { color: #9d6fff; }
+
+    .desktop { padding-top: 3rem; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="glitch" data-text="HPYRLAND">HPYRLAND</div>
-    <p class="subtitle">Linux Enjoyer &bull; Terminal Ricer &bull; PC Gamer</p>
-    <div class="divider"></div>
-    <div class="tags">
-      <div class="tag">Arch Linux</div>
-      <div class="tag">WSL</div>
-      <div class="tag">Counter-Strike</div>
-      <div class="tag">Open Source</div>
+  <div class="wallpaper"></div>
+  <canvas id="matrix"></canvas>
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <span style="color:#9d6fff">⬡</span> hpyrland
     </div>
-    <p class="terminal-line"><span>~</span> building something cool<span class="cursor"></span></p>
-    <div class="social-links">
-      <a href="https://github.com/Hpyrland" target="_blank">GitHub</a>
+    <div class="topbar-right">
+      <span id="top-time"></span>
     </div>
   </div>
+
+  <div class="desktop">
+    <!-- Fetch Widget -->
+    <div class="glass fetch-widget">
+      <div class="fetch-header">
+        <div class="arch-logo">⬡</div>
+        <div>
+          <div class="fetch-user">Hpyrland</div>
+          <div class="fetch-host">hpyrland.github.io</div>
+        </div>
+      </div>
+      <div class="fetch-divider"></div>
+      <div class="fetch-row"><span class="fetch-key">OS</span><span class="fetch-val">Arch Linux x86_64</span></div>
+      <div class="fetch-row"><span class="fetch-key">WM</span><span class="fetch-val">Hyprland (soon™)</span></div>
+      <div class="fetch-row"><span class="fetch-key">Shell</span><span class="fetch-val">zsh + oh-my-zsh</span></div>
+      <div class="fetch-row"><span class="fetch-key">Term</span><span class="fetch-val">Kitty</span></div>
+      <div class="fetch-row"><span class="fetch-key">Theme</span><span class="fetch-val">Purple & Black</span></div>
+      <div class="fetch-row"><span class="fetch-key">Game</span><span class="fetch-val">Counter-Strike</span></div>
+      <div class="fetch-colors">
+        <div class="color-dot" style="background:#ff5f5f"></div>
+        <div class="color-dot" style="background:#ffb86c"></div>
+        <div class="color-dot" style="background:#f1fa8c"></div>
+        <div class="color-dot" style="background:#50fa7b"></div>
+        <div class="color-dot" style="background:#8be9fd"></div>
+        <div class="color-dot" style="background:#9d6fff"></div>
+        <div class="color-dot" style="background:#ff79c6"></div>
+      </div>
+    </div>
+
+    <!-- Clock Widget -->
+    <div class="glass clock-widget">
+      <div class="clock-time" id="clock">00:00:00</div>
+      <div class="clock-date" id="date">loading...</div>
+    </div>
+
+    <!-- Info Widget -->
+    <div class="glass info-widget">
+      <div class="info-title">// about</div>
+      <div class="tag-grid">
+        <div class="tag">Arch Linux</div>
+        <div class="tag">WSL</div>
+        <div class="tag">Counter-Strike</div>
+        <div class="tag">Hyprland</div>
+        <div class="tag">Terminal Ricer</div>
+        <div class="tag">Open Source</div>
+        <div class="tag">Fastfetch</div>
+        <div class="tag">Zsh</div>
+      </div>
+      <div class="status-line">
+        <div class="pulse"></div>
+        building something cool...
+      </div>
+      <div class="links">
+        <a href="https://github.com/Hpyrland" target="_blank">github</a>
+      </div>
+    </div>
+
+    <!-- Cava Widget -->
+    <div class="glass cava-widget" id="cava"></div>
+  </div>
+
+  <script>
+    // Clock
+    function updateClock() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2,'0');
+      const m = String(now.getMinutes()).padStart(2,'0');
+      const s = String(now.getSeconds()).padStart(2,'0');
+      document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+      document.getElementById('top-time').textContent = `${h}:${m}`;
+      const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      document.getElementById('date').textContent =
+        `${days[now.getDay()]}  ${months[now.getMonth()]} ${now.getDate()}  ${now.getFullYear()}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Fake Cava bars
+    const cava = document.getElementById('cava');
+    const barCount = 40;
+    for (let i = 0; i < barCount; i++) {
+      const bar = document.createElement('div');
+      bar.className = 'bar';
+      const min = Math.random() * 20 + 5;
+      const max = Math.random() * 55 + 20;
+      const dur = (Math.random() * 0.8 + 0.4).toFixed(2);
+      bar.style.cssText = `--min:${min}px;--max:${max}px;--dur:${dur}s;height:${min}px;animation-delay:${(Math.random()*0.5).toFixed(2)}s`;
+      cava.appendChild(bar);
+    }
+
+    // Matrix rain
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const cols = Math.floor(canvas.width / 20);
+    const drops = Array(cols).fill(1);
+    const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789ABCDEF';
+    function drawMatrix() {
+      ctx.fillStyle = 'rgba(10,10,15,0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#9d6fff';
+      ctx.font = '14px JetBrains Mono';
+      drops.forEach((y, i) => {
+        const char = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(char, i * 20, y * 20);
+        if (y * 20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      });
+    }
+    setInterval(drawMatrix, 50);
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
 </body>
 </html>
