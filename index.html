@@ -7,444 +7,121 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
+    :root {
+      --pink: #f4b8c8;
+      --pink-soft: #fdd5df;
+      --pink-dim: rgba(244,184,200,0.18);
+    }
     body {
-      background: #0a0a0f;
+      background: #0d0a0c;
       font-family: 'JetBrains Mono', monospace;
       min-height: 100vh;
       overflow: hidden;
-      color: #c9c9d4;
+      color: #cec0c4;
     }
-
     .wallpaper {
-      position: fixed;
-      inset: 0;
-      background: linear-gradient(135deg, #0a0a0f 0%, #1a0a14 40%, #0a0f1a 100%);
+      position: fixed; inset: 0;
+      background: linear-gradient(135deg, #0d0a0c 0%, #160d11 50%, #0d0c10 100%);
       z-index: 0;
     }
-
-    #matrix {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      opacity: 0.15;
-    }
-
+    #matrix { position: fixed; inset: 0; z-index: 1; opacity: 0.12; }
     .desktop {
-      position: relative;
-      z-index: 10;
-      width: 100vw;
-      height: 100vh;
-      padding: 1.5rem;
+      position: relative; z-index: 10;
+      width: 100vw; height: 100vh;
+      padding: 1.5rem; padding-top: 3rem;
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-template-rows: auto 1fr auto;
       gap: 1rem;
-      padding-top: 3rem;
     }
-
     .glass {
-      background: rgba(20, 10, 20, 0.55);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 150, 200, 0.18);
-      border-radius: 12px;
+      background: rgba(18,12,15,0.6);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--pink-dim);
+      border-radius: 14px;
     }
-
-    /* Clock */
-    .clock-widget {
-      grid-column: 2;
-      grid-row: 1;
-      padding: 1.5rem 2rem;
-      text-align: right;
-    }
-
-    .clock-time {
-      font-size: 3.5rem;
-      font-weight: 600;
-      color: #fff;
-      letter-spacing: 0.05em;
-    }
-
-    .clock-date {
-      font-size: 0.8rem;
-      color: #ff9eb5;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      margin-top: 0.3rem;
-    }
-
-    /* Fetch widget */
-    .fetch-widget {
-      grid-column: 1;
-      grid-row: 1 / 3;
-      padding: 1.5rem;
-    }
-
-    .fetch-header {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1.2rem;
-    }
-
-    .arch-logo {
-      font-size: 2rem;
-      color: #ff9eb5;
-    }
-
-    .fetch-user {
-      font-size: 1rem;
-      color: #fff;
-      font-weight: 600;
-    }
-
-    .fetch-host {
-      font-size: 0.75rem;
-      color: #ff9eb5;
-      letter-spacing: 0.1em;
-    }
-
-    .fetch-divider {
-      height: 1px;
-      background: linear-gradient(90deg, rgba(255,158,181,0.4), transparent);
-      margin-bottom: 1rem;
-    }
-
-    .fetch-row {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 0.5rem;
-      font-size: 0.78rem;
-      align-items: center;
-    }
-
-    .fetch-key {
-      color: #ff9eb5;
-      min-width: 60px;
-      font-weight: 600;
-    }
-
-    .fetch-val { color: #c9c9d4; }
-
-    .fetch-colors {
-      display: flex;
-      gap: 5px;
-      margin-top: 1rem;
-    }
-
-    .color-dot {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-    }
-
-    /* Cava */
-    .cava-widget {
-      grid-column: 1;
-      grid-row: 3;
-      padding: 1rem 1.5rem;
-      display: flex;
-      align-items: flex-end;
-      gap: 3px;
-      height: 80px;
-    }
-
-    .bar {
-      flex: 1;
-      background: linear-gradient(to top, #ff9eb5, #ffccd8);
-      border-radius: 2px 2px 0 0;
-      animation: dance var(--dur) ease-in-out infinite alternate;
-      min-height: 4px;
-    }
-
-    @keyframes dance {
-      from { height: var(--min); }
-      to { height: var(--max); }
-    }
-
-    /* Info widget */
-    .info-widget {
-      grid-column: 2;
-      grid-row: 2 / 4;
-      padding: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
-    }
-
-    .info-title {
-      font-size: 0.7rem;
-      color: #ff9eb5;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      margin-bottom: 0.3rem;
-    }
-
-    .tag-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-
-    .tag {
-      border: 1px solid rgba(255,158,181,0.3);
-      color: #ff9eb5;
-      padding: 0.3rem 0.7rem;
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
-      border-radius: 4px;
-      transition: all 0.2s;
-      cursor: default;
-    }
-
-    .tag:hover {
-      background: rgba(255,158,181,0.15);
-      border-color: #ff9eb5;
-    }
-
-    .tag.clickable {
-      cursor: pointer;
-    }
-
-    .tag.clickable:hover {
-      background: rgba(255,158,181,0.25);
-      border-color: #ff9eb5;
-      transform: scale(1.05);
-    }
-
-    .status-line {
-      font-size: 0.75rem;
-      color: #444460;
-      margin-top: auto;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .pulse {
-      width: 6px; height: 6px;
-      background: #ff9eb5;
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; box-shadow: 0 0 4px #ff9eb5; }
-      50% { opacity: 0.3; box-shadow: none; }
-    }
-
-    .links { display: flex; gap: 1rem; }
-
-    .links a {
-      color: #444460;
-      text-decoration: none;
-      font-size: 0.72rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
-
-    .links a:hover { color: #ff9eb5; }
-
-    /* Topbar */
     .topbar {
-      position: fixed;
-      top: 0; left: 0; right: 0;
+      position: fixed; top: 0; left: 0; right: 0;
       height: 36px;
-      background: rgba(10,10,15,0.85);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255,158,181,0.1);
+      background: rgba(13,10,12,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(244,184,200,0.08);
       z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 1.5rem;
-      font-size: 0.72rem;
-      color: #444460;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.5rem; font-size: 0.72rem; color: #4a3a40;
     }
+    .topbar span { color: var(--pink); }
+    .clock-widget { grid-column:2; grid-row:1; padding:1.5rem 2rem; text-align:right; }
+    .clock-time { font-size:3.5rem; font-weight:600; color:#fff; letter-spacing:0.05em; text-shadow:0 0 30px rgba(244,184,200,0.2); }
+    .clock-date { font-size:0.8rem; color:var(--pink); letter-spacing:0.3em; text-transform:uppercase; margin-top:0.3rem; opacity:0.7; }
+    .fetch-widget { grid-column:1; grid-row:1/3; padding:1.5rem; }
+    .fetch-header { display:flex; align-items:center; gap:1rem; margin-bottom:1.2rem; }
+    .arch-logo { font-size:2rem; color:var(--pink); }
+    .fetch-user { font-size:1rem; color:#fff; font-weight:600; }
+    .fetch-host { font-size:0.75rem; color:var(--pink); letter-spacing:0.1em; opacity:0.7; }
+    .fetch-divider { height:1px; background:linear-gradient(90deg,rgba(244,184,200,0.25),transparent); margin-bottom:1rem; }
+    .fetch-row { display:flex; gap:1rem; margin-bottom:0.5rem; font-size:0.78rem; }
+    .fetch-key { color:var(--pink); min-width:60px; font-weight:600; opacity:0.85; }
+    .fetch-val { color:#b8a8ae; }
+    .cava-widget { grid-column:1; grid-row:3; padding:1rem 1.5rem; display:flex; align-items:flex-end; gap:3px; height:80px; }
+    .bar { flex:1; background:linear-gradient(to top,#f4b8c8,#fdd5df); border-radius:2px 2px 0 0; animation:dance var(--dur) ease-in-out infinite alternate; min-height:4px; opacity:0.75; }
+    @keyframes dance { from{height:var(--min)} to{height:var(--max)} }
+    .info-widget { grid-column:2; grid-row:2/4; padding:1.5rem; display:flex; flex-direction:column; gap:0.8rem; }
+    .info-title { font-size:0.7rem; color:var(--pink); letter-spacing:0.3em; text-transform:uppercase; margin-bottom:0.3rem; opacity:0.7; }
+    .tag-grid { display:flex; flex-wrap:wrap; gap:0.5rem; }
+    .tag { border:1px solid rgba(244,184,200,0.2); color:#c8a0ae; padding:0.3rem 0.7rem; font-size:0.7rem; letter-spacing:0.1em; border-radius:6px; transition:all 0.2s; cursor:default; }
+    .tag:hover { background:rgba(244,184,200,0.08); border-color:rgba(244,184,200,0.4); color:var(--pink-soft); }
+    .tag.clickable { cursor:pointer; }
+    .tag.clickable:hover { background:rgba(244,184,200,0.12); border-color:var(--pink); color:var(--pink-soft); transform:translateY(-1px); box-shadow:0 4px 12px rgba(244,184,200,0.1); }
+    .status-line { font-size:0.75rem; color:#3a2a30; margin-top:auto; display:flex; align-items:center; gap:0.5rem; }
+    .pulse { width:6px; height:6px; background:var(--pink); border-radius:50%; animation:pulse 2s infinite; opacity:0.6; }
+    @keyframes pulse { 0%,100%{opacity:0.6;box-shadow:0 0 4px var(--pink)} 50%{opacity:0.2;box-shadow:none} }
+    .links { display:flex; gap:1rem; }
+    .links a { color:#3a2a30; text-decoration:none; font-size:0.72rem; letter-spacing:0.15em; text-transform:uppercase; transition:color 0.2s; }
+    .links a:hover { color:var(--pink); }
 
-    .topbar-left { display: flex; gap: 1rem; }
-    .topbar-right { display: flex; gap: 1rem; align-items: center; }
-    .topbar span { color: #ff9eb5; }
-
-    /* ─── CROSSHAIR POPUP ─────────────────────────────────── */
-    #cs-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      z-index: 9998;
-      display: none;
-      animation: fadeIn 0.2s ease;
-    }
-
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
+    /* Crosshair popup */
+    #cs-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:9998; display:none; }
     #cs-popup {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0.95);
-      width: 320px;
-      background: rgba(20, 10, 20, 0.75);
-      backdrop-filter: blur(40px) saturate(180%);
-      -webkit-backdrop-filter: blur(40px) saturate(180%);
-      border: 1px solid rgba(255, 158, 181, 0.2);
-      border-radius: 20px;
-      padding: 24px;
-      z-index: 9999;
-      color: #fff;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      display: none;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
-      animation: popIn 0.25s cubic-bezier(.4,0,.2,1);
+      position:fixed; top:50%; left:50%;
+      transform:translate(-50%,-50%);
+      width:310px;
+      background:rgba(18,10,14,0.85);
+      backdrop-filter:blur(40px) saturate(160%);
+      -webkit-backdrop-filter:blur(40px) saturate(160%);
+      border:1px solid rgba(244,184,200,0.15);
+      border-radius:20px; padding:22px;
+      z-index:9999; color:#fff;
+      font-family:'JetBrains Mono',monospace;
+      font-size:13px; display:none;
+      box-shadow:0 8px 40px rgba(0,0,0,0.7), inset 0 1px 0 rgba(244,184,200,0.06);
     }
-
-    @keyframes popIn {
-      from { opacity: 0; transform: translate(-50%, -50%) scale(0.92); }
-      to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-    }
-
-    .cs-popup-title {
-      font-size: 15px;
-      font-weight: 600;
-      text-align: center;
-      color: #ffccd8;
-      letter-spacing: 1px;
-      margin-bottom: 4px;
-    }
-
-    .cs-popup-sub {
-      text-align: center;
-      font-size: 10px;
-      color: rgba(255,255,255,0.3);
-      margin-bottom: 16px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid rgba(255,158,181,0.1);
-    }
-
-    /* Preview box */
-    .cs-preview {
-      width: 100%;
-      height: 80px;
-      background: rgba(0,0,0,0.4);
-      border-radius: 10px;
-      border: 1px solid rgba(255,158,181,0.1);
-      position: relative;
-      margin-bottom: 18px;
-      overflow: hidden;
-    }
-
-    /* Sliders */
-    .cs-row { margin-bottom: 14px; }
-
-    .cs-label-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
-    }
-
-    .cs-label {
-      font-size: 11px;
-      color: rgba(255,255,255,0.4);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .cs-val {
-      font-size: 11px;
-      color: #ffccd8;
-      background: rgba(255,158,181,0.1);
-      padding: 1px 10px;
-      border-radius: 20px;
-      min-width: 28px;
-      text-align: center;
-    }
-
-    .cs-popup input[type=range] {
-      width: 100%;
-      height: 4px;
-      -webkit-appearance: none;
-      appearance: none;
-      background: rgba(255,255,255,0.12);
-      border-radius: 2px;
-      outline: none;
-      cursor: pointer;
-    }
-
-    .cs-popup input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: #ff9eb5;
-      box-shadow: 0 2px 6px rgba(255,100,150,0.4);
-      cursor: pointer;
-    }
-
-    /* Color swatches */
-    .cs-palette {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 8px;
-      margin-bottom: 14px;
-    }
-
-    .cs-swatch {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      cursor: pointer;
-      border: 2px solid transparent;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-      transition: transform 0.15s, border 0.15s;
-    }
-
-    .cs-swatch:hover { transform: scale(1.15); }
-    .cs-swatch.active { border: 2px solid #fff; }
-
-    /* Close button */
-    .cs-close {
-      width: 100%;
-      padding: 9px;
-      background: rgba(255,158,181,0.08);
-      color: rgba(255,158,181,0.5);
-      border: 1px solid rgba(255,158,181,0.12);
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 11px;
-      font-family: 'JetBrains Mono', monospace;
-      margin-top: 4px;
-      transition: all 0.2s;
-      letter-spacing: 0.5px;
-    }
-
-    .cs-close:hover {
-      background: rgba(255,158,181,0.15);
-      color: #ffccd8;
-      border-color: rgba(255,158,181,0.3);
-    }
+    .cs-popup-title { font-size:14px; font-weight:600; text-align:center; color:var(--pink-soft); letter-spacing:1px; margin-bottom:3px; }
+    .cs-popup-sub { text-align:center; font-size:10px; color:rgba(244,184,200,0.25); margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid rgba(244,184,200,0.08); }
+    #cs-preview { width:100%; height:76px; background:rgba(0,0,0,0.45); border-radius:10px; border:1px solid rgba(244,184,200,0.08); position:relative; margin-bottom:16px; overflow:hidden; }
+    .cs-row { margin-bottom:12px; }
+    .cs-label-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; }
+    .cs-label { font-size:10px; color:rgba(244,184,200,0.4); text-transform:uppercase; letter-spacing:1px; }
+    .cs-val { font-size:10px; color:var(--pink-soft); background:rgba(244,184,200,0.08); padding:1px 9px; border-radius:20px; min-width:26px; text-align:center; }
+    #cs-popup input[type=range] { width:100%; height:3px; -webkit-appearance:none; appearance:none; background:rgba(244,184,200,0.12); border-radius:2px; outline:none; cursor:pointer; }
+    #cs-popup input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:14px; height:14px; border-radius:50%; background:var(--pink); box-shadow:0 2px 8px rgba(244,184,200,0.35); cursor:pointer; }
+    .cs-palette { display:flex; flex-wrap:wrap; gap:5px; margin-top:6px; margin-bottom:12px; }
+    .cs-swatch { width:26px; height:26px; border-radius:7px; cursor:pointer; border:2px solid transparent; box-shadow:0 2px 5px rgba(0,0,0,0.3); transition:transform 0.15s,border 0.15s; }
+    .cs-swatch:hover { transform:scale(1.15); }
+    .cs-swatch.active { border:2px solid rgba(255,255,255,0.8); }
+    .cs-close { width:100%; padding:8px; background:rgba(244,184,200,0.06); color:rgba(244,184,200,0.4); border:1px solid rgba(244,184,200,0.1); border-radius:12px; cursor:pointer; font-size:10px; font-family:'JetBrains Mono',monospace; margin-top:2px; transition:all 0.2s; letter-spacing:0.5px; }
+    .cs-close:hover { background:rgba(244,184,200,0.12); color:var(--pink-soft); border-color:rgba(244,184,200,0.25); }
   </style>
 </head>
 <body>
   <div class="wallpaper"></div>
   <canvas id="matrix"></canvas>
-
-  <!-- Topbar -->
   <div class="topbar">
-    <div class="topbar-left">
-      <span>⬡</span> hpyrland
-    </div>
-    <div class="topbar-right">
-      <span id="top-time"></span>
-    </div>
+    <div><span>⬡</span> hpyrland</div>
+    <div><span id="top-time"></span></div>
   </div>
-
   <div class="desktop">
-    <!-- Fetch Widget -->
     <div class="glass fetch-widget">
       <div class="fetch-header">
         <div class="arch-logo">⬡</div>
@@ -458,211 +135,173 @@
       <div class="fetch-row"><span class="fetch-key">WM</span><span class="fetch-val">Hyprland (soon™)</span></div>
       <div class="fetch-row"><span class="fetch-key">Shell</span><span class="fetch-val">zsh + oh-my-zsh</span></div>
       <div class="fetch-row"><span class="fetch-key">Term</span><span class="fetch-val">Kitty</span></div>
-      <div class="fetch-row"><span class="fetch-key">Theme</span><span class="fetch-val">Pink & Black</span></div>
+      <div class="fetch-row"><span class="fetch-key">Theme</span><span class="fetch-val">Sakura & Black</span></div>
       <div class="fetch-row"><span class="fetch-key">Game</span><span class="fetch-val">Counter-Strike</span></div>
     </div>
-
-    <!-- Clock Widget -->
     <div class="glass clock-widget">
       <div class="clock-time" id="clock">00:00:00</div>
       <div class="clock-date" id="date">loading...</div>
     </div>
-
-    <!-- Info Widget -->
     <div class="glass info-widget">
       <div class="info-title">// about</div>
       <div class="tag-grid">
         <div class="tag">Arch Linux</div>
         <div class="tag">WSL</div>
-        <div class="tag clickable" id="cs-tag" title="Click to see my crosshair!">Counter-Strike 🎯</div>
+        <div class="tag clickable" id="cs-tag">Counter-Strike 🎯</div>
         <div class="tag">Hyprland</div>
         <div class="tag">Terminal Ricer</div>
         <div class="tag">Open Source</div>
         <div class="tag">Fastfetch</div>
         <div class="tag">Zsh</div>
       </div>
-      <div class="status-line">
-        <div class="pulse"></div>
-        building something cool...
-      </div>
-      <div class="links">
-        <a href="https://github.com/Hpyrland" target="_blank">github</a>
-      </div>
+      <div class="status-line"><div class="pulse"></div>building something cool...</div>
+      <div class="links"><a href="https://github.com/Hpyrland" target="_blank">github</a></div>
     </div>
-
-    <!-- Cava Widget -->
     <div class="glass cava-widget" id="cava"></div>
   </div>
 
-  <!-- Crosshair Popup -->
+  <!-- Popup -->
   <div id="cs-overlay"></div>
-  <div id="cs-popup" class="cs-popup">
+  <div id="cs-popup">
     <div class="cs-popup-title">🎯 My CS Crosshair</div>
     <div class="cs-popup-sub">click outside to close</div>
-    <div class="cs-preview" id="cs-preview"></div>
+    <div id="cs-preview"></div>
     <div class="cs-row">
-      <div class="cs-label-row">
-        <span class="cs-label">Length</span>
-        <span class="cs-val" id="val-length">10</span>
-      </div>
+      <div class="cs-label-row"><span class="cs-label">Length</span><span class="cs-val" id="val-length">10</span></div>
       <input type="range" min="2" max="50" value="10" id="slider-length">
     </div>
     <div class="cs-row">
-      <div class="cs-label-row">
-        <span class="cs-label">Thickness</span>
-        <span class="cs-val" id="val-thickness">2</span>
-      </div>
+      <div class="cs-label-row"><span class="cs-label">Thickness</span><span class="cs-val" id="val-thickness">2</span></div>
       <input type="range" min="1" max="10" value="2" id="slider-thickness">
     </div>
     <div class="cs-row">
-      <div class="cs-label-row">
-        <span class="cs-label">Gap</span>
-        <span class="cs-val" id="val-gap">4</span>
-      </div>
+      <div class="cs-label-row"><span class="cs-label">Gap</span><span class="cs-val" id="val-gap">4</span></div>
       <input type="range" min="0" max="20" value="4" id="slider-gap">
     </div>
     <div class="cs-row">
-      <div class="cs-label-row">
-        <span class="cs-label">Opacity</span>
-        <span class="cs-val" id="val-opacity">1</span>
-      </div>
+      <div class="cs-label-row"><span class="cs-label">Opacity</span><span class="cs-val" id="val-opacity">1</span></div>
       <input type="range" min="0.1" max="1" step="0.1" value="1" id="slider-opacity">
     </div>
     <span class="cs-label">Color</span>
     <div class="cs-palette" id="cs-palette"></div>
-    <button class="cs-close" id="cs-close">✕ Close</button>
+    <button class="cs-close" id="cs-close">✕  close</button>
   </div>
 
   <script>
-    // ─── CLOCK ───────────────────────────────────────────────────
+    // Clock
     function updateClock() {
       const now = new Date();
-      const h = String(now.getHours()).padStart(2,'0');
-      const m = String(now.getMinutes()).padStart(2,'0');
-      const s = String(now.getSeconds()).padStart(2,'0');
-      document.getElementById('clock').textContent = h+':'+m+':'+s;
-      document.getElementById('top-time').textContent = h+':'+m;
-      const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-      document.getElementById('date').textContent =
-        days[now.getDay()]+'  '+months[now.getMonth()]+' '+now.getDate()+'  '+now.getFullYear();
+      const pad = n => String(n).padStart(2,'0');
+      document.getElementById('clock').textContent = pad(now.getHours())+':'+pad(now.getMinutes())+':'+pad(now.getSeconds());
+      document.getElementById('top-time').textContent = pad(now.getHours())+':'+pad(now.getMinutes());
+      const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      document.getElementById('date').textContent = days[now.getDay()]+'  '+months[now.getMonth()]+' '+now.getDate()+'  '+now.getFullYear();
     }
-    setInterval(updateClock, 1000);
-    updateClock();
+    setInterval(updateClock,1000); updateClock();
 
-    // ─── CAVA BARS ───────────────────────────────────────────────
+    // Cava
     const cava = document.getElementById('cava');
-    for (let i = 0; i < 40; i++) {
-      const bar = document.createElement('div');
-      bar.className = 'bar';
-      const min = Math.random() * 20 + 5;
-      const max = Math.random() * 55 + 20;
-      const dur = (Math.random() * 0.8 + 0.4).toFixed(2);
-      bar.style.cssText = '--min:'+min+'px;--max:'+max+'px;--dur:'+dur+'s;height:'+min+'px;animation-delay:'+(Math.random()*0.5).toFixed(2)+'s';
-      cava.appendChild(bar);
+    for(let i=0;i<40;i++){
+      const b=document.createElement('div'); b.className='bar';
+      const mn=Math.random()*20+5,mx=Math.random()*55+20,dur=(Math.random()*0.8+0.4).toFixed(2);
+      b.style.cssText='--min:'+mn+'px;--max:'+mx+'px;--dur:'+dur+'s;height:'+mn+'px;animation-delay:'+(Math.random()*0.5).toFixed(2)+'s';
+      cava.appendChild(b);
     }
 
-    // ─── MATRIX RAIN ─────────────────────────────────────────────
-    const canvas = document.getElementById('matrix');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    const cols = Math.floor(canvas.width / 20);
-    const drops = Array(cols).fill(1);
-    const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789ABCDEF';
-    function drawMatrix() {
-      ctx.fillStyle = 'rgba(10,10,15,0.05)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#ff9eb5';
-      ctx.font = '14px JetBrains Mono';
-      drops.forEach((y, i) => {
-        const char = chars[Math.floor(Math.random() * chars.length)];
-        ctx.fillText(char, i * 20, y * 20);
-        if (y * 20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
-        drops[i]++;
+    // Matrix
+    const canvas=document.getElementById('matrix');
+    const ctx=canvas.getContext('2d');
+    canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+    const cols=Math.floor(canvas.width/20);
+    const drops=Array(cols).fill(1);
+    const chars='アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789ABCDEF';
+    function drawMatrix(){
+      ctx.fillStyle='rgba(13,10,12,0.05)'; ctx.fillRect(0,0,canvas.width,canvas.height);
+      ctx.fillStyle='#f4b8c8'; ctx.font='14px JetBrains Mono';
+      drops.forEach((y,i)=>{
+        ctx.fillText(chars[Math.floor(Math.random()*chars.length)],i*20,y*20);
+        if(y*20>canvas.height&&Math.random()>0.975)drops[i]=0; drops[i]++;
       });
     }
-    setInterval(drawMatrix, 50);
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
+    setInterval(drawMatrix,50);
+    window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
 
-    // ─── CROSSHAIR POPUP ─────────────────────────────────────────
-    let csConfig = { length: 10, thickness: 2, gap: 4, opacity: 1, color: '#ff9eb5' };
+    // Crosshair popup
+    var csConfig = { length:10, thickness:2, gap:4, opacity:1, color:'#f4b8c8' };
 
-    const colors = [
-      '#ffffff', '#ff9eb5', '#ff4444', '#00ff00',
-      '#4fc3f7', '#ffff00', '#ff8800', '#ff44ff',
-      '#00ffff', '#aaaaaa', '#ff0066', '#44ff88'
+    var swatchColors = [
+      '#ffffff','#f4b8c8','#fdd5df','#ffaec0',
+      '#ff4444','#00ff00','#4fc3f7','#ffff00',
+      '#ff8800','#ff44ff','#00ffff','#aaaaaa'
     ];
 
-    // Build palette
-    const palette = document.getElementById('cs-palette');
-    colors.forEach(function(c) {
-      const swatch = document.createElement('div');
-      swatch.className = 'cs-swatch' + (csConfig.color === c ? ' active' : '');
-      swatch.style.background = c;
-      swatch.onclick = function() {
+    var paletteEl = document.getElementById('cs-palette');
+    swatchColors.forEach(function(c){
+      var s = document.createElement('div');
+      s.className = 'cs-swatch' + (csConfig.color===c?' active':'');
+      s.style.background = c;
+      s.onclick = function(){
         csConfig.color = c;
-        palette.querySelectorAll('.cs-swatch').forEach(s => s.classList.remove('active'));
-        swatch.classList.add('active');
+        paletteEl.querySelectorAll('.cs-swatch').forEach(function(x){ x.classList.remove('active'); });
+        s.classList.add('active');
         renderPreview();
       };
-      palette.appendChild(swatch);
+      paletteEl.appendChild(s);
     });
 
-    // Render crosshair in preview box
-    function renderPreview() {
-      const p = document.getElementById('cs-preview');
-      p.innerHTML = '';
-      const rect = p.getBoundingClientRect();
-      const cx = rect.width / 2 || 133;
-      const cy = rect.height / 2 || 38;
-      const { length, thickness, gap, color, opacity } = csConfig;
-      [
-        [cy - gap - length, cx - thickness/2, thickness, length],
-        [cy + gap,          cx - thickness/2, thickness, length],
-        [cy - thickness/2,  cx - gap - length, length,  thickness],
-        [cy - thickness/2,  cx + gap,          length,  thickness]
-      ].forEach(function(a) {
-        const line = document.createElement('div');
-        Object.assign(line.style, {
-          position: 'absolute',
-          top: a[0]+'px', left: a[1]+'px',
-          width: a[2]+'px', height: a[3]+'px',
-          backgroundColor: color,
-          opacity: String(opacity)
-        });
-        preview.appendChild(line);
+    function renderPreview(){
+      var box = document.getElementById('cs-preview');
+      box.innerHTML = '';
+      var w = box.offsetWidth || 266;
+      var h = box.offsetHeight || 76;
+      var cx = w/2;
+      var cy = h/2;
+      var len = csConfig.length;
+      var th  = csConfig.thickness;
+      var gap = csConfig.gap;
+      var col = csConfig.color;
+      var op  = csConfig.opacity;
+      var lines = [
+        [cy-gap-len, cx-th/2, th,  len],
+        [cy+gap,     cx-th/2, th,  len],
+        [cy-th/2,    cx-gap-len, len, th],
+        [cy-th/2,    cx+gap,     len, th]
+      ];
+      lines.forEach(function(a){
+        var d = document.createElement('div');
+        d.style.position   = 'absolute';
+        d.style.top        = a[0]+'px';
+        d.style.left       = a[1]+'px';
+        d.style.width      = a[2]+'px';
+        d.style.height     = a[3]+'px';
+        d.style.backgroundColor = col;
+        d.style.opacity    = String(op);
+        box.appendChild(d);
       });
     }
 
-    // Slider events
-    ['length','thickness','gap','opacity'].forEach(function(key) {
-      const slider = document.getElementById('slider-'+key);
-      const valEl = document.getElementById('val-'+key);
-      slider.oninput = function() {
+    ['length','thickness','gap','opacity'].forEach(function(key){
+      var slider = document.getElementById('slider-'+key);
+      var valEl  = document.getElementById('val-'+key);
+      slider.oninput = function(){
         csConfig[key] = parseFloat(this.value);
         valEl.textContent = this.value;
         renderPreview();
       };
     });
 
-    // Open popup
-    document.getElementById('cs-tag').onclick = function() {
+    document.getElementById('cs-tag').onclick = function(){
       document.getElementById('cs-overlay').style.display = 'block';
-      document.getElementById('cs-popup').style.display = 'block';
+      document.getElementById('cs-popup').style.display   = 'block';
       setTimeout(renderPreview, 50);
     };
 
-    // Close popup
-    function closePopup() {
+    function closePopup(){
       document.getElementById('cs-overlay').style.display = 'none';
-      document.getElementById('cs-popup').style.display = 'none';
+      document.getElementById('cs-popup').style.display   = 'none';
     }
-
-    document.getElementById('cs-close').onclick = closePopup;
+    document.getElementById('cs-close').onclick   = closePopup;
     document.getElementById('cs-overlay').onclick = closePopup;
   </script>
 </body>
