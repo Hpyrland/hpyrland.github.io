@@ -49,7 +49,7 @@
       border-bottom: 1px solid rgba(244,184,200,0.08);
       z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 1.5rem; font-size: 0.72rem; color: #4a3a40;
+      padding: 0 1.5rem; font-size: 0.72rem; color: #e0ced5;
     }
     .topbar span { color: var(--pink); }
     .clock-widget { grid-column:2; grid-row:1; padding:1.5rem 2rem; text-align:right; }
@@ -62,24 +62,24 @@
     .fetch-host { font-size:0.75rem; color:var(--pink); letter-spacing:0.1em; opacity:0.7; }
     .fetch-divider { height:1px; background:linear-gradient(90deg,rgba(244,184,200,0.25),transparent); margin-bottom:1rem; }
     .fetch-row { display:flex; gap:1rem; margin-bottom:0.5rem; font-size:0.78rem; }
-    .fetch-key { color:var(--pink); min-width:60px; font-weight:600; opacity:0.85; }
-    .fetch-val { color:#b8a8ae; }
+    .fetch-key { color:var(--pink); min-width:60px; font-weight:600; opacity:1; }
+    .fetch-val { color:#e8dadd; }
     .cava-widget { grid-column:1; grid-row:3; padding:1rem 1.5rem; display:flex; align-items:flex-end; gap:3px; height:80px; }
     .bar { flex:1; background:linear-gradient(to top,#f4b8c8,#fdd5df); border-radius:2px 2px 0 0; animation:dance var(--dur) ease-in-out infinite alternate; min-height:4px; opacity:0.75; }
     @keyframes dance { from{height:var(--min)} to{height:var(--max)} }
     .info-widget { grid-column:2; grid-row:2/4; padding:1.5rem; display:flex; flex-direction:column; gap:0.8rem; }
-    .info-title { font-size:0.7rem; color:var(--pink); letter-spacing:0.3em; text-transform:uppercase; margin-bottom:0.3rem; opacity:0.7; }
+    .info-title { font-size:0.7rem; color:var(--pink); letter-spacing:0.3em; text-transform:uppercase; margin-bottom:0.3rem; opacity:0.9; }
     .tag-grid { display:flex; flex-wrap:wrap; gap:0.5rem; }
     .tag { border:1px solid rgba(244,184,200,0.2); color:#c8a0ae; padding:0.3rem 0.7rem; font-size:0.7rem; letter-spacing:0.1em; border-radius:6px; transition:all 0.2s; cursor:default; }
     .tag:hover { background:rgba(244,184,200,0.08); border-color:rgba(244,184,200,0.4); color:var(--pink-soft); }
     .tag.clickable { cursor:pointer; }
     .tag.clickable:hover { background:rgba(244,184,200,0.12); border-color:var(--pink); color:var(--pink-soft); transform:translateY(-1px); box-shadow:0 4px 12px rgba(244,184,200,0.1); }
-    .status-line { font-size:0.75rem; color:#3a2a30; margin-top:auto; display:flex; align-items:center; gap:0.5rem; }
+    .status-line { font-size:0.75rem; color:#e0ced5; margin-top:auto; display:flex; align-items:center; gap:0.5rem; }
     .pulse { width:6px; height:6px; background:var(--pink); border-radius:50%; animation:pulse 2s infinite; opacity:0.6; }
     @keyframes pulse { 0%,100%{opacity:0.6;box-shadow:0 0 4px var(--pink)} 50%{opacity:0.2;box-shadow:none} }
     .links { display:flex; gap:1rem; }
-    .links a { color:#3a2a30; text-decoration:none; font-size:0.72rem; letter-spacing:0.15em; text-transform:uppercase; transition:color 0.2s; }
-    .links a:hover { color:var(--pink); }
+    .links a { color:var(--pink-soft); text-decoration:none; font-size:0.72rem; letter-spacing:0.15em; text-transform:uppercase; transition:color 0.2s; }
+    .links a:hover { color:#ffffff; }
 
     /* Crosshair popup */
     #cs-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:9998; display:none; }
@@ -102,7 +102,7 @@
     #cs-preview { width:100%; height:76px; background:rgba(0,0,0,0.45); border-radius:10px; border:1px solid rgba(244,184,200,0.08); position:relative; margin-bottom:16px; overflow:hidden; }
     .cs-row { margin-bottom:12px; }
     .cs-label-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; }
-    .cs-label { font-size:10px; color:rgba(244,184,200,0.4); text-transform:uppercase; letter-spacing:1px; }
+    .cs-label { font-size:10px; color:rgba(244,184,200,0.9); text-transform:uppercase; letter-spacing:1px; }
     .cs-val { font-size:10px; color:var(--pink-soft); background:rgba(244,184,200,0.08); padding:1px 9px; border-radius:20px; min-width:26px; text-align:center; }
     #cs-popup input[type=range] { width:100%; height:3px; -webkit-appearance:none; appearance:none; background:rgba(244,184,200,0.12); border-radius:2px; outline:none; cursor:pointer; }
     #cs-popup input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:14px; height:14px; border-radius:50%; background:var(--pink); box-shadow:0 2px 8px rgba(244,184,200,0.35); cursor:pointer; }
@@ -160,7 +160,6 @@
     <div class="glass cava-widget" id="cava"></div>
   </div>
 
-  <!-- Popup -->
   <div id="cs-overlay"></div>
   <div id="cs-popup">
     <div class="cs-popup-title">🎯 My CS Crosshair</div>
