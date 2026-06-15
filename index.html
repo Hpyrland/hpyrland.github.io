@@ -613,11 +613,12 @@
     });
 
     // Render crosshair in preview box
-   function renderPreview() {
+    function renderPreview() {
       const p = document.getElementById('cs-preview');
       p.innerHTML = '';
-      const cx = 133;
-      const cy = 38;
+      const rect = p.getBoundingClientRect();
+      const cx = rect.width / 2 || 133;
+      const cy = rect.height / 2 || 38;
       const { length, thickness, gap, color, opacity } = csConfig;
       [
         [cy - gap - length, cx - thickness/2, thickness, length],
