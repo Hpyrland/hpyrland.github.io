@@ -16,15 +16,13 @@
       color: #c9c9d4;
     }
 
-    /* Animated wallpaper gradient */
     .wallpaper {
       position: fixed;
       inset: 0;
-      background: linear-gradient(135deg, #0a0a0f 0%, #0f0a1a 40%, #0a0f1a 100%);
+      background: linear-gradient(135deg, #0a0a0f 0%, #1a0a14 40%, #0a0f1a 100%);
       z-index: 0;
     }
 
-    /* Matrix rain canvas */
     #matrix {
       position: fixed;
       inset: 0;
@@ -32,7 +30,6 @@
       opacity: 0.15;
     }
 
-    /* Layout */
     .desktop {
       position: relative;
       z-index: 10;
@@ -43,14 +40,14 @@
       grid-template-columns: 1fr 1fr;
       grid-template-rows: auto 1fr auto;
       gap: 1rem;
+      padding-top: 3rem;
     }
 
-    /* Glass mixin */
     .glass {
-      background: rgba(15, 10, 30, 0.55);
+      background: rgba(20, 10, 20, 0.55);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(157, 111, 255, 0.18);
+      border: 1px solid rgba(255, 150, 200, 0.18);
       border-radius: 12px;
     }
 
@@ -71,7 +68,7 @@
 
     .clock-date {
       font-size: 0.8rem;
-      color: #9d6fff;
+      color: #ff9eb5;
       letter-spacing: 0.3em;
       text-transform: uppercase;
       margin-top: 0.3rem;
@@ -93,7 +90,7 @@
 
     .arch-logo {
       font-size: 2rem;
-      color: #9d6fff;
+      color: #ff9eb5;
     }
 
     .fetch-user {
@@ -104,13 +101,13 @@
 
     .fetch-host {
       font-size: 0.75rem;
-      color: #9d6fff;
+      color: #ff9eb5;
       letter-spacing: 0.1em;
     }
 
     .fetch-divider {
       height: 1px;
-      background: linear-gradient(90deg, rgba(157,111,255,0.4), transparent);
+      background: linear-gradient(90deg, rgba(255,158,181,0.4), transparent);
       margin-bottom: 1rem;
     }
 
@@ -123,14 +120,12 @@
     }
 
     .fetch-key {
-      color: #9d6fff;
+      color: #ff9eb5;
       min-width: 60px;
       font-weight: 600;
     }
 
-    .fetch-val {
-      color: #c9c9d4;
-    }
+    .fetch-val { color: #c9c9d4; }
 
     .fetch-colors {
       display: flex;
@@ -144,7 +139,7 @@
       border-radius: 50%;
     }
 
-    /* Cava widget */
+    /* Cava */
     .cava-widget {
       grid-column: 1;
       grid-row: 3;
@@ -157,7 +152,7 @@
 
     .bar {
       flex: 1;
-      background: linear-gradient(to top, #9d6fff, #c9a0ff);
+      background: linear-gradient(to top, #ff9eb5, #ffccd8);
       border-radius: 2px 2px 0 0;
       animation: dance var(--dur) ease-in-out infinite alternate;
       min-height: 4px;
@@ -180,7 +175,7 @@
 
     .info-title {
       font-size: 0.7rem;
-      color: #9d6fff;
+      color: #ff9eb5;
       letter-spacing: 0.3em;
       text-transform: uppercase;
       margin-bottom: 0.3rem;
@@ -193,8 +188,8 @@
     }
 
     .tag {
-      border: 1px solid rgba(157,111,255,0.3);
-      color: #9d6fff;
+      border: 1px solid rgba(255,158,181,0.3);
+      color: #ff9eb5;
       padding: 0.3rem 0.7rem;
       font-size: 0.7rem;
       letter-spacing: 0.1em;
@@ -204,8 +199,18 @@
     }
 
     .tag:hover {
-      background: rgba(157,111,255,0.15);
-      border-color: #9d6fff;
+      background: rgba(255,158,181,0.15);
+      border-color: #ff9eb5;
+    }
+
+    .tag.clickable {
+      cursor: pointer;
+    }
+
+    .tag.clickable:hover {
+      background: rgba(255,158,181,0.25);
+      border-color: #ff9eb5;
+      transform: scale(1.05);
     }
 
     .status-line {
@@ -219,20 +224,17 @@
 
     .pulse {
       width: 6px; height: 6px;
-      background: #9d6fff;
+      background: #ff9eb5;
       border-radius: 50%;
       animation: pulse 2s infinite;
     }
 
     @keyframes pulse {
-      0%, 100% { opacity: 1; box-shadow: 0 0 4px #9d6fff; }
+      0%, 100% { opacity: 1; box-shadow: 0 0 4px #ff9eb5; }
       50% { opacity: 0.3; box-shadow: none; }
     }
 
-    .links {
-      display: flex;
-      gap: 1rem;
-    }
+    .links { display: flex; gap: 1rem; }
 
     .links a {
       color: #444460;
@@ -243,7 +245,7 @@
       transition: color 0.2s;
     }
 
-    .links a:hover { color: #9d6fff; }
+    .links a:hover { color: #ff9eb5; }
 
     /* Topbar */
     .topbar {
@@ -252,7 +254,7 @@
       height: 36px;
       background: rgba(10,10,15,0.85);
       backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(157,111,255,0.1);
+      border-bottom: 1px solid rgba(255,158,181,0.1);
       z-index: 100;
       display: flex;
       align-items: center;
@@ -264,9 +266,167 @@
 
     .topbar-left { display: flex; gap: 1rem; }
     .topbar-right { display: flex; gap: 1rem; align-items: center; }
-    .topbar span { color: #9d6fff; }
+    .topbar span { color: #ff9eb5; }
 
-    .desktop { padding-top: 3rem; }
+    /* ─── CROSSHAIR POPUP ─────────────────────────────────── */
+    #cs-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 9998;
+      display: none;
+      animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    #cs-popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.95);
+      width: 320px;
+      background: rgba(20, 10, 20, 0.75);
+      backdrop-filter: blur(40px) saturate(180%);
+      -webkit-backdrop-filter: blur(40px) saturate(180%);
+      border: 1px solid rgba(255, 158, 181, 0.2);
+      border-radius: 20px;
+      padding: 24px;
+      z-index: 9999;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      display: none;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
+      animation: popIn 0.25s cubic-bezier(.4,0,.2,1);
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: translate(-50%, -50%) scale(0.92); }
+      to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+
+    .cs-popup-title {
+      font-size: 15px;
+      font-weight: 600;
+      text-align: center;
+      color: #ffccd8;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .cs-popup-sub {
+      text-align: center;
+      font-size: 10px;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255,158,181,0.1);
+    }
+
+    /* Preview box */
+    .cs-preview {
+      width: 100%;
+      height: 80px;
+      background: rgba(0,0,0,0.4);
+      border-radius: 10px;
+      border: 1px solid rgba(255,158,181,0.1);
+      position: relative;
+      margin-bottom: 18px;
+      overflow: hidden;
+    }
+
+    /* Sliders */
+    .cs-row { margin-bottom: 14px; }
+
+    .cs-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .cs-label {
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .cs-val {
+      font-size: 11px;
+      color: #ffccd8;
+      background: rgba(255,158,181,0.1);
+      padding: 1px 10px;
+      border-radius: 20px;
+      min-width: 28px;
+      text-align: center;
+    }
+
+    .cs-popup input[type=range] {
+      width: 100%;
+      height: 4px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: rgba(255,255,255,0.12);
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .cs-popup input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #ff9eb5;
+      box-shadow: 0 2px 6px rgba(255,100,150,0.4);
+      cursor: pointer;
+    }
+
+    /* Color swatches */
+    .cs-palette {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+      margin-bottom: 14px;
+    }
+
+    .cs-swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      transition: transform 0.15s, border 0.15s;
+    }
+
+    .cs-swatch:hover { transform: scale(1.15); }
+    .cs-swatch.active { border: 2px solid #fff; }
+
+    /* Close button */
+    .cs-close {
+      width: 100%;
+      padding: 9px;
+      background: rgba(255,158,181,0.08);
+      color: rgba(255,158,181,0.5);
+      border: 1px solid rgba(255,158,181,0.12);
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      margin-top: 4px;
+      transition: all 0.2s;
+      letter-spacing: 0.5px;
+    }
+
+    .cs-close:hover {
+      background: rgba(255,158,181,0.15);
+      color: #ffccd8;
+      border-color: rgba(255,158,181,0.3);
+    }
   </style>
 </head>
 <body>
@@ -276,7 +436,7 @@
   <!-- Topbar -->
   <div class="topbar">
     <div class="topbar-left">
-      <span style="color:#9d6fff">⬡</span> hpyrland
+      <span>⬡</span> hpyrland
     </div>
     <div class="topbar-right">
       <span id="top-time"></span>
@@ -298,7 +458,7 @@
       <div class="fetch-row"><span class="fetch-key">WM</span><span class="fetch-val">Hyprland (soon™)</span></div>
       <div class="fetch-row"><span class="fetch-key">Shell</span><span class="fetch-val">zsh + oh-my-zsh</span></div>
       <div class="fetch-row"><span class="fetch-key">Term</span><span class="fetch-val">Kitty</span></div>
-      <div class="fetch-row"><span class="fetch-key">Theme</span><span class="fetch-val">Purple & Black</span></div>
+      <div class="fetch-row"><span class="fetch-key">Theme</span><span class="fetch-val">Pink & Black</span></div>
       <div class="fetch-row"><span class="fetch-key">Game</span><span class="fetch-val">Counter-Strike</span></div>
       <div class="fetch-colors">
         <div class="color-dot" style="background:#ff5f5f"></div>
@@ -306,7 +466,7 @@
         <div class="color-dot" style="background:#f1fa8c"></div>
         <div class="color-dot" style="background:#50fa7b"></div>
         <div class="color-dot" style="background:#8be9fd"></div>
-        <div class="color-dot" style="background:#9d6fff"></div>
+        <div class="color-dot" style="background:#ff9eb5"></div>
         <div class="color-dot" style="background:#ff79c6"></div>
       </div>
     </div>
@@ -323,7 +483,7 @@
       <div class="tag-grid">
         <div class="tag">Arch Linux</div>
         <div class="tag">WSL</div>
-        <div class="tag">Counter-Strike</div>
+        <div class="tag clickable" id="cs-tag" title="Click to see my crosshair!">Counter-Strike 🎯</div>
         <div class="tag">Hyprland</div>
         <div class="tag">Terminal Ricer</div>
         <div class="tag">Open Source</div>
@@ -343,37 +503,75 @@
     <div class="glass cava-widget" id="cava"></div>
   </div>
 
+  <!-- Crosshair Popup -->
+  <div id="cs-overlay"></div>
+  <div id="cs-popup" class="cs-popup">
+    <div class="cs-popup-title">🎯 My CS Crosshair</div>
+    <div class="cs-popup-sub">click outside to close</div>
+    <div class="cs-preview" id="cs-preview"></div>
+    <div class="cs-row">
+      <div class="cs-label-row">
+        <span class="cs-label">Length</span>
+        <span class="cs-val" id="val-length">10</span>
+      </div>
+      <input type="range" min="2" max="50" value="10" id="slider-length">
+    </div>
+    <div class="cs-row">
+      <div class="cs-label-row">
+        <span class="cs-label">Thickness</span>
+        <span class="cs-val" id="val-thickness">2</span>
+      </div>
+      <input type="range" min="1" max="10" value="2" id="slider-thickness">
+    </div>
+    <div class="cs-row">
+      <div class="cs-label-row">
+        <span class="cs-label">Gap</span>
+        <span class="cs-val" id="val-gap">4</span>
+      </div>
+      <input type="range" min="0" max="20" value="4" id="slider-gap">
+    </div>
+    <div class="cs-row">
+      <div class="cs-label-row">
+        <span class="cs-label">Opacity</span>
+        <span class="cs-val" id="val-opacity">1</span>
+      </div>
+      <input type="range" min="0.1" max="1" step="0.1" value="1" id="slider-opacity">
+    </div>
+    <span class="cs-label">Color</span>
+    <div class="cs-palette" id="cs-palette"></div>
+    <button class="cs-close" id="cs-close">✕ Close</button>
+  </div>
+
   <script>
-    // Clock
+    // ─── CLOCK ───────────────────────────────────────────────────
     function updateClock() {
       const now = new Date();
       const h = String(now.getHours()).padStart(2,'0');
       const m = String(now.getMinutes()).padStart(2,'0');
       const s = String(now.getSeconds()).padStart(2,'0');
-      document.getElementById('clock').textContent = `${h}:${m}:${s}`;
-      document.getElementById('top-time').textContent = `${h}:${m}`;
+      document.getElementById('clock').textContent = h+':'+m+':'+s;
+      document.getElementById('top-time').textContent = h+':'+m;
       const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
       const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
       document.getElementById('date').textContent =
-        `${days[now.getDay()]}  ${months[now.getMonth()]} ${now.getDate()}  ${now.getFullYear()}`;
+        days[now.getDay()]+'  '+months[now.getMonth()]+' '+now.getDate()+'  '+now.getFullYear();
     }
     setInterval(updateClock, 1000);
     updateClock();
 
-    // Fake Cava bars
+    // ─── CAVA BARS ───────────────────────────────────────────────
     const cava = document.getElementById('cava');
-    const barCount = 40;
-    for (let i = 0; i < barCount; i++) {
+    for (let i = 0; i < 40; i++) {
       const bar = document.createElement('div');
       bar.className = 'bar';
       const min = Math.random() * 20 + 5;
       const max = Math.random() * 55 + 20;
       const dur = (Math.random() * 0.8 + 0.4).toFixed(2);
-      bar.style.cssText = `--min:${min}px;--max:${max}px;--dur:${dur}s;height:${min}px;animation-delay:${(Math.random()*0.5).toFixed(2)}s`;
+      bar.style.cssText = '--min:'+min+'px;--max:'+max+'px;--dur:'+dur+'s;height:'+min+'px;animation-delay:'+(Math.random()*0.5).toFixed(2)+'s';
       cava.appendChild(bar);
     }
 
-    // Matrix rain
+    // ─── MATRIX RAIN ─────────────────────────────────────────────
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
@@ -384,7 +582,7 @@
     function drawMatrix() {
       ctx.fillStyle = 'rgba(10,10,15,0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#9d6fff';
+      ctx.fillStyle = '#ff9eb5';
       ctx.font = '14px JetBrains Mono';
       drops.forEach((y, i) => {
         const char = chars[Math.floor(Math.random() * chars.length)];
@@ -394,11 +592,85 @@
       });
     }
     setInterval(drawMatrix, 50);
-
     window.addEventListener('resize', () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     });
+
+    // ─── CROSSHAIR POPUP ─────────────────────────────────────────
+    let csConfig = { length: 10, thickness: 2, gap: 4, opacity: 1, color: '#ff9eb5' };
+
+    const colors = [
+      '#ffffff', '#ff9eb5', '#ff4444', '#00ff00',
+      '#4fc3f7', '#ffff00', '#ff8800', '#ff44ff',
+      '#00ffff', '#aaaaaa', '#ff0066', '#44ff88'
+    ];
+
+    // Build palette
+    const palette = document.getElementById('cs-palette');
+    colors.forEach(function(c) {
+      const swatch = document.createElement('div');
+      swatch.className = 'cs-swatch' + (csConfig.color === c ? ' active' : '');
+      swatch.style.background = c;
+      swatch.onclick = function() {
+        csConfig.color = c;
+        palette.querySelectorAll('.cs-swatch').forEach(s => s.classList.remove('active'));
+        swatch.classList.add('active');
+        renderPreview();
+      };
+      palette.appendChild(swatch);
+    });
+
+    // Render crosshair in preview box
+    function renderPreview() {
+      const preview = document.getElementById('cs-preview');
+      preview.innerHTML = '';
+      const cx = 160, cy = 40;
+      const { length, thickness, gap, color, opacity } = csConfig;
+      [
+        [cy - gap - length, cx - thickness/2, thickness, length],
+        [cy + gap,          cx - thickness/2, thickness, length],
+        [cy - thickness/2,  cx - gap - length, length,  thickness],
+        [cy - thickness/2,  cx + gap,          length,  thickness]
+      ].forEach(function(a) {
+        const line = document.createElement('div');
+        Object.assign(line.style, {
+          position: 'absolute',
+          top: a[0]+'px', left: a[1]+'px',
+          width: a[2]+'px', height: a[3]+'px',
+          backgroundColor: color,
+          opacity: String(opacity)
+        });
+        preview.appendChild(line);
+      });
+    }
+
+    // Slider events
+    ['length','thickness','gap','opacity'].forEach(function(key) {
+      const slider = document.getElementById('slider-'+key);
+      const valEl = document.getElementById('val-'+key);
+      slider.oninput = function() {
+        csConfig[key] = parseFloat(this.value);
+        valEl.textContent = this.value;
+        renderPreview();
+      };
+    });
+
+    // Open popup
+    document.getElementById('cs-tag').onclick = function() {
+      document.getElementById('cs-overlay').style.display = 'block';
+      document.getElementById('cs-popup').style.display = 'block';
+      renderPreview();
+    };
+
+    // Close popup
+    function closePopup() {
+      document.getElementById('cs-overlay').style.display = 'none';
+      document.getElementById('cs-popup').style.display = 'none';
+    }
+
+    document.getElementById('cs-close').onclick = closePopup;
+    document.getElementById('cs-overlay').onclick = closePopup;
   </script>
 </body>
 </html>
