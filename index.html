@@ -460,15 +460,6 @@
       <div class="fetch-row"><span class="fetch-key">Term</span><span class="fetch-val">Kitty</span></div>
       <div class="fetch-row"><span class="fetch-key">Theme</span><span class="fetch-val">Pink & Black</span></div>
       <div class="fetch-row"><span class="fetch-key">Game</span><span class="fetch-val">Counter-Strike</span></div>
-      <div class="fetch-colors">
-        <div class="color-dot" style="background:#ff5f5f"></div>
-        <div class="color-dot" style="background:#ffb86c"></div>
-        <div class="color-dot" style="background:#f1fa8c"></div>
-        <div class="color-dot" style="background:#50fa7b"></div>
-        <div class="color-dot" style="background:#8be9fd"></div>
-        <div class="color-dot" style="background:#ff9eb5"></div>
-        <div class="color-dot" style="background:#ff79c6"></div>
-      </div>
     </div>
 
     <!-- Clock Widget -->
@@ -623,9 +614,10 @@
 
     // Render crosshair in preview box
     function renderPreview() {
-      const preview = document.getElementById('cs-preview');
-      preview.innerHTML = '';
-      const cx = 160, cy = 40;
+      const p = document.getElementById('cs-preview');
+      p.innerHTML = '';
+      const cx = p.offsetWidth / 2;
+      const cy = p.offsetHeight / 2;
       const { length, thickness, gap, color, opacity } = csConfig;
       [
         [cy - gap - length, cx - thickness/2, thickness, length],
