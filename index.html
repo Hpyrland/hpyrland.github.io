@@ -1,307 +1,483 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Hpyrland</title>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    :root {
-      --pink: #f4b8c8;
-      --pink-soft: #fdd5df;
-      --pink-dim: rgba(244,184,200,0.18);
-    }
-    body {
-      background: #0d0a0c;
-      font-family: 'JetBrains Mono', monospace;
-      min-height: 100vh;
-      overflow: hidden;
-      color: #cec0c4;
-    }
-    .wallpaper {
-      position: fixed; inset: 0;
-      background: linear-gradient(135deg, #0d0a0c 0%, #160d11 50%, #0d0c10 100%);
-      z-index: 0;
-    }
-    #matrix { position: fixed; inset: 0; z-index: 1; opacity: 0.12; }
-    .desktop {
-      position: relative; z-index: 10;
-      width: 100vw; height: 100vh;
-      padding: 1.5rem; padding-top: 3rem;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: auto 1fr auto;
-      gap: 1rem;
-    }
-    .glass {
-      background: rgba(18,12,15,0.6);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border: 1px solid var(--pink-dim);
-      border-radius: 14px;
-    }
-    .topbar {
-      position: fixed; top: 0; left: 0; right: 0;
-      height: 36px;
-      background: rgba(13,10,12,0.88);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(244,184,200,0.08);
-      z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 1.5rem; font-size: 0.72rem; color: #e0ced5;
-    }
-    .topbar span { color: var(--pink); }
-    .clock-widget { grid-column:2; grid-row:1; padding:1.5rem 2rem; text-align:right; }
-    .clock-time { font-size:3.5rem; font-weight:600; color:#fff; letter-spacing:0.05em; text-shadow:0 0 30px rgba(244,184,200,0.2); }
-    .clock-date { font-size:0.8rem; color:var(--pink); letter-spacing:0.3em; text-transform:uppercase; margin-top:0.3rem; opacity:0.7; }
-    .fetch-widget { grid-column:1; grid-row:1/3; padding:1.5rem; }
-    .fetch-header { display:flex; align-items:center; gap:1rem; margin-bottom:1.2rem; }
-    .arch-logo { font-size:2rem; color:var(--pink); }
-    .fetch-user { font-size:1rem; color:#fff; font-weight:600; }
-    .fetch-host { font-size:0.75rem; color:var(--pink); letter-spacing:0.1em; opacity:0.7; }
-    .fetch-divider { height:1px; background:linear-gradient(90deg,rgba(244,184,200,0.25),transparent); margin-bottom:1rem; }
-    .fetch-row { display:flex; gap:1rem; margin-bottom:0.5rem; font-size:0.78rem; }
-    .fetch-key { color:var(--pink); min-width:60px; font-weight:600; opacity:1; }
-    .fetch-val { color:#e8dadd; }
-    .cava-widget { grid-column:1; grid-row:3; padding:1rem 1.5rem; display:flex; align-items:flex-end; gap:3px; height:80px; }
-    .bar { flex:1; background:linear-gradient(to top,#f4b8c8,#fdd5df); border-radius:2px 2px 0 0; animation:dance var(--dur) ease-in-out infinite alternate; min-height:4px; opacity:0.75; }
-    @keyframes dance { from{height:var(--min)} to{height:var(--max)} }
-    .info-widget { grid-column:2; grid-row:2/4; padding:1.5rem; display:flex; flex-direction:column; gap:0.8rem; }
-    .info-title { font-size:0.7rem; color:var(--pink); letter-spacing:0.3em; text-transform:uppercase; margin-bottom:0.3rem; opacity:0.9; }
-    .tag-grid { display:flex; flex-wrap:wrap; gap:0.5rem; }
-    .tag { border:1px solid rgba(244,184,200,0.2); color:#c8a0ae; padding:0.3rem 0.7rem; font-size:0.7rem; letter-spacing:0.1em; border-radius:6px; transition:all 0.2s; cursor:default; }
-    .tag:hover { background:rgba(244,184,200,0.08); border-color:rgba(244,184,200,0.4); color:var(--pink-soft); }
-    .tag.clickable { cursor:pointer; }
-    .tag.clickable:hover { background:rgba(244,184,200,0.12); border-color:var(--pink); color:var(--pink-soft); transform:translateY(-1px); box-shadow:0 4px 12px rgba(244,184,200,0.1); }
-    .status-line { font-size:0.75rem; color:#e0ced5; margin-top:auto; display:flex; align-items:center; gap:0.5rem; }
-    .pulse { width:6px; height:6px; background:var(--pink); border-radius:50%; animation:pulse 2s infinite; opacity:0.6; }
-    @keyframes pulse { 0%,100%{opacity:0.6;box-shadow:0 0 4px var(--pink)} 50%{opacity:0.2;box-shadow:none} }
-    .links { display:flex; gap:1rem; }
-    .links a { color:var(--pink-soft); text-decoration:none; font-size:0.72rem; letter-spacing:0.15em; text-transform:uppercase; transition:color 0.2s; }
-    .links a:hover { color:#ffffff; }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#08070a" />
+<title>Hpyrland — Links</title>
+<meta name="description" content="Hpyrland — Arch Linux, Hyprland, and everything in between." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.85em' font-size='90'>⬡</text></svg>" />
 
-    /* Crosshair popup */
-    #cs-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:9998; display:none; }
-    #cs-popup {
-      position:fixed; top:50%; left:50%;
-      transform:translate(-50%,-50%);
-      width:310px;
-      background:rgba(18,10,14,0.85);
-      backdrop-filter:blur(40px) saturate(160%);
-      -webkit-backdrop-filter:blur(40px) saturate(160%);
-      border:1px solid rgba(244,184,200,0.15);
-      border-radius:20px; padding:22px;
-      z-index:9999; color:#fff;
-      font-family:'JetBrains Mono',monospace;
-      font-size:13px; display:none;
-      box-shadow:0 8px 40px rgba(0,0,0,0.7), inset 0 1px 0 rgba(244,184,200,0.06);
-    }
-    .cs-popup-title { font-size:14px; font-weight:600; text-align:center; color:var(--pink-soft); letter-spacing:1px; margin-bottom:3px; }
-    .cs-popup-sub { text-align:center; font-size:10px; color:rgba(244,184,200,0.25); margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid rgba(244,184,200,0.08); }
-    #cs-preview { width:100%; height:76px; background:rgba(0,0,0,0.45); border-radius:10px; border:1px solid rgba(244,184,200,0.08); position:relative; margin-bottom:16px; overflow:hidden; }
-    .cs-row { margin-bottom:12px; }
-    .cs-label-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; }
-    .cs-label { font-size:10px; color:rgba(244,184,200,0.9); text-transform:uppercase; letter-spacing:1px; }
-    .cs-val { font-size:10px; color:var(--pink-soft); background:rgba(244,184,200,0.08); padding:1px 9px; border-radius:20px; min-width:26px; text-align:center; }
-    #cs-popup input[type=range] { width:100%; height:3px; -webkit-appearance:none; appearance:none; background:rgba(244,184,200,0.12); border-radius:2px; outline:none; cursor:pointer; }
-    #cs-popup input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:14px; height:14px; border-radius:50%; background:var(--pink); box-shadow:0 2px 8px rgba(244,184,200,0.35); cursor:pointer; }
-    .cs-palette { display:flex; flex-wrap:wrap; gap:5px; margin-top:6px; margin-bottom:12px; }
-    .cs-swatch { width:26px; height:26px; border-radius:7px; cursor:pointer; border:2px solid transparent; box-shadow:0 2px 5px rgba(0,0,0,0.3); transition:transform 0.15s,border 0.15s; }
-    .cs-swatch:hover { transform:scale(1.15); }
-    .cs-swatch.active { border:2px solid rgba(255,255,255,0.8); }
-    .cs-close { width:100%; padding:8px; background:rgba(244,184,200,0.06); color:rgba(244,184,200,0.4); border:1px solid rgba(244,184,200,0.1); border-radius:12px; cursor:pointer; font-size:10px; font-family:'JetBrains Mono',monospace; margin-top:2px; transition:all 0.2s; letter-spacing:0.5px; }
-    .cs-close:hover { background:rgba(244,184,200,0.12); color:var(--pink-soft); border-color:rgba(244,184,200,0.25); }
-  </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" referrerpolicy="no-referrer">
+
+<!--
+  HPYRLAND — LINKS PAGE
+  ---------------------------------------------------------------
+  Built from scratch (original CSS/SVG), styled to match the
+  "Sakura & Black" theme + hexagon mark already on hpyrland.github.io.
+
+  Quick customization map:
+   - Real photo instead of the hex mark → swap the <div class="avatar"><svg>
+     for <img src="you.jpg" alt="Hpyrland">
+   - Bio text                → <p class="bio">
+   - "Now playing" line      → .status-text
+   - Badge label             → .badge.arch (currently "ARCH")
+   - Social links            → <nav class="socials"> hrefs (Discord/Twitch are "#")
+   - Track title / artist    → .track-title / .track-artist
+   - Every color             → CSS variables in :root below
+-->
+
+<style>
+  :root{
+    --bg-0:#08070a;
+    --bg-1:#131015;
+    --bg-2:#1c171d;
+    --card-bg: rgba(19,15,17,0.55);
+    --card-border: rgba(255,200,215,0.12);
+    --sakura:#ffb3c6;
+    --sakura-deep:#e2839c;
+    --sakura-pale:#ffe1e9;
+    --white:#f7f1f2;
+    --muted:#a3919a;
+    --muted-dim:#786872;
+    --online:#8ee6a0;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ height:100%; }
+  body{
+    min-height:100vh;
+    font-family:'Inter', system-ui, sans-serif;
+    color:var(--white);
+    background:
+      radial-gradient(ellipse 120% 70% at 50% -8%, #241a22 0%, #0d0a0e 45%, #050405 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:64px 20px 48px;
+    position:relative;
+    overflow-x:hidden;
+    -webkit-tap-highlight-color:transparent;
+  }
+  ::selection{ background:var(--sakura); color:var(--bg-0); }
+
+  /* ---------- ambient background layers ---------- */
+  .grain{
+    position:fixed; inset:0; z-index:60; pointer-events:none;
+    opacity:.05; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+  .stars{ position:fixed; inset:0; z-index:2; pointer-events:none; overflow:hidden; }
+  .star{
+    position:absolute; background:#fff; border-radius:50%;
+    box-shadow:0 0 4px rgba(255,255,255,.6);
+    animation-name:twinkle; animation-iteration-count:infinite; animation-timing-function:ease-in-out;
+  }
+  .petals{ position:fixed; inset:0; z-index:3; pointer-events:none; overflow:hidden; }
+  .petal{
+    position:absolute; top:-6%; width:9px; height:9px; opacity:0;
+    background:radial-gradient(circle at 30% 30%, var(--sakura-pale), var(--sakura) 60%, var(--sakura-deep));
+    border-radius:60% 40% 55% 45% / 55% 45% 60% 40%;
+    animation-name:petalFall; animation-iteration-count:infinite; animation-timing-function:linear;
+  }
+  svg.mountains{
+    position:fixed; left:0; bottom:0; width:100%; height:26vh; min-height:170px; max-height:260px;
+    z-index:1; pointer-events:none;
+  }
+  .mtn-back{ fill:#1a1219; }
+  .mtn-front{ fill:#08050a; }
+
+  /* ---------- layout ---------- */
+  .profile-wrap{
+    position:relative; z-index:10;
+    display:flex; flex-direction:column; align-items:center; gap:16px;
+    width:100%; max-width:420px; margin:0 auto;
+  }
+
+  .card{
+    width:100%;
+    background:var(--card-bg);
+    backdrop-filter:blur(18px) saturate(140%);
+    -webkit-backdrop-filter:blur(18px) saturate(140%);
+    border:1px solid var(--card-border);
+    border-radius:22px;
+    box-shadow:0 20px 60px rgba(0,0,0,.5), 0 0 40px rgba(255,179,198,.12);
+    opacity:0; transform:translateY(16px) scale(.98);
+    animation:cardIn .8s cubic-bezier(.2,.7,.3,1) forwards;
+  }
+  .profile-card{ padding:0 26px 22px; text-align:center; }
+  .player-card{
+    padding:14px 16px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+    animation-delay:.15s;
+  }
+
+  /* ---------- avatar ---------- */
+  .avatar-wrap{ display:flex; justify-content:center; margin-top:-48px; margin-bottom:12px; }
+  .avatar-box{ position:relative; width:104px; height:104px; }
+  .avatar-ring{
+    width:100%; height:100%; border-radius:50%; padding:3px;
+    background:conic-gradient(from 180deg, var(--sakura), var(--sakura-pale), var(--sakura-deep), var(--sakura));
+    box-shadow:0 0 30px rgba(255,179,198,.35);
+  }
+  .avatar{
+    width:100%; height:100%; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #241a20, #0c0a0c 70%);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .hex-mark{ width:44%; height:44%; }
+  .hex-mark polygon{
+    fill:none; stroke:var(--sakura); stroke-width:5; stroke-linejoin:round;
+    filter:drop-shadow(0 0 6px rgba(255,179,198,.6));
+  }
+  .avatar-dot{
+    position:absolute; bottom:2px; right:2px; width:16px; height:16px; border-radius:50%;
+    background:var(--online); border:3px solid var(--bg-1);
+    box-shadow:0 0 8px var(--online); animation:pulseDot 2.4s ease-in-out infinite;
+  }
+
+  .username{
+    font-family:'Space Grotesk', sans-serif; font-weight:700;
+    font-size:clamp(1.5rem, 5vw, 1.9rem); letter-spacing:.3px;
+    text-shadow:0 0 16px rgba(255,179,198,.35);
+    animation:glowPulse 3.4s ease-in-out infinite;
+  }
+  .bio{
+    margin-top:8px; font-size:.92rem; line-height:1.55; color:var(--muted);
+    max-width:320px; margin-inline:auto;
+  }
+  .bio .soon{ color:var(--sakura); font-style:italic; }
+
+  /* ---------- status / presence pill ---------- */
+  .status-pill{
+    margin-top:18px; display:flex; align-items:center; gap:12px; text-align:left;
+    background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.06);
+    border-radius:16px; padding:10px 14px;
+  }
+  .mini-avatar{
+    position:relative; width:40px; height:40px; border-radius:50%; flex-shrink:0;
+    background:radial-gradient(circle at 35% 30%, #241a20, #0c0a0c 70%);
+    border:2px solid rgba(255,179,198,.4);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .mini-avatar svg{ width:44%; height:44%; }
+  .mini-avatar svg polygon{ fill:none; stroke:var(--sakura); stroke-width:6; stroke-linejoin:round; }
+  .mini-dot{
+    position:absolute; bottom:-2px; right:-2px; width:12px; height:12px; border-radius:50%;
+    background:var(--online); border:2px solid var(--bg-1); box-shadow:0 0 6px var(--online);
+  }
+  .status-main{ flex:1; min-width:0; }
+  .status-top{ display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+  .status-name{ font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:.95rem; }
+  .badge{
+    display:inline-flex; align-items:center; gap:4px;
+    font-family:'JetBrains Mono', monospace; font-size:.62rem; letter-spacing:.4px;
+    padding:2px 7px; border-radius:6px; line-height:1.6;
+  }
+  .badge.arch{ background:rgba(255,179,198,.12); color:var(--sakura); border:1px solid rgba(255,179,198,.25); }
+  .badge.verified{ background:rgba(255,225,233,.08); color:var(--sakura-pale); border:1px solid rgba(255,225,233,.2); }
+  .status-sub{
+    margin-top:3px; display:flex; align-items:center; gap:6px;
+    font-family:'JetBrains Mono', monospace; font-size:.74rem; color:var(--muted);
+    white-space:nowrap; overflow:hidden;
+  }
+  .status-sub svg{ flex-shrink:0; }
+  .status-text{ overflow:hidden; text-overflow:ellipsis; }
+  .cursor-blink{
+    display:inline-block; width:6px; height:12px; background:var(--sakura);
+    flex-shrink:0; animation:blink 1s steps(2) infinite;
+  }
+
+  /* ---------- socials ---------- */
+  .socials{ margin-top:18px; display:flex; justify-content:center; gap:12px; }
+  .social-btn{
+    width:42px; height:42px; border-radius:50%;
+    background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07);
+    color:var(--muted); display:flex; align-items:center; justify-content:center;
+    font-size:1.05rem; text-decoration:none;
+    transition:transform .25s ease, background .25s ease, color .25s ease, box-shadow .25s ease;
+  }
+  .social-btn:hover{
+    color:var(--bg-0); background:var(--sakura); border-color:var(--sakura);
+    transform:translateY(-3px); box-shadow:0 8px 20px rgba(255,179,198,.35);
+  }
+  .social-btn:focus-visible{ outline:2px solid var(--sakura); outline-offset:3px; }
+
+  .views{
+    margin-top:14px; display:flex; align-items:center; justify-content:center; gap:6px;
+    font-family:'JetBrains Mono', monospace; font-size:.75rem; color:var(--muted-dim);
+  }
+
+  /* ---------- player card ---------- */
+  .vinyl{
+    position:relative; width:52px; height:52px; border-radius:50%; flex-shrink:0;
+    background:repeating-radial-gradient(circle at 50% 50%, #1c161a 0 3px, #100c10 3px 6px);
+    box-shadow:0 4px 14px rgba(0,0,0,.5);
+  }
+  .vinyl::after{
+    content:''; position:absolute; inset:0; margin:auto; width:16px; height:16px; border-radius:50%;
+    background:var(--sakura); box-shadow:0 0 10px rgba(255,179,198,.5);
+  }
+  .vinyl.spinning{ animation:spin 3.2s linear infinite; }
+
+  .track-info{ flex:1 1 170px; min-width:0; }
+  .track-title{
+    font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:.88rem;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .track-artist{
+    font-family:'JetBrains Mono', monospace; font-size:.7rem; color:var(--muted); margin-top:1px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .progress-row{ display:flex; align-items:center; gap:8px; margin-top:7px; }
+  .time{ font-family:'JetBrains Mono', monospace; font-size:.68rem; color:var(--muted-dim); flex-shrink:0; }
+  .progress-track{ flex:1; height:4px; border-radius:2px; background:rgba(255,255,255,.08); overflow:hidden; }
+  .progress-fill{ height:100%; width:0%; border-radius:2px; background:linear-gradient(90deg, var(--sakura-deep), var(--sakura)); }
+
+  .controls{ display:flex; align-items:center; gap:6px; flex-shrink:0; margin-left:auto; }
+  .ctrl-btn{
+    width:32px; height:32px; border-radius:50%; border:1px solid rgba(255,255,255,.08);
+    background:rgba(255,255,255,.03); color:var(--white);
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+    transition:transform .2s ease, background .2s ease;
+  }
+  .ctrl-btn:hover{ background:rgba(255,179,198,.14); }
+  .ctrl-btn:active{ transform:scale(.9); }
+  .ctrl-btn:focus-visible{ outline:2px solid var(--sakura); outline-offset:2px; }
+  .ctrl-btn.play{ width:38px; height:38px; background:var(--sakura); color:var(--bg-0); border-color:var(--sakura); }
+  .ctrl-btn.play:hover{ background:var(--sakura-pale); }
+  .ctrl-btn .icon-pause{ display:none; }
+  .ctrl-btn.is-playing .icon-play{ display:none; }
+  .ctrl-btn.is-playing .icon-pause{ display:inline-flex; }
+
+  .footnote{
+    margin-top:4px; font-family:'JetBrains Mono', monospace; font-size:.7rem;
+    color:var(--muted-dim); opacity:.7; text-align:center;
+  }
+
+  /* ---------- motion ---------- */
+  @keyframes twinkle{ 0%,100%{opacity:.15;} 50%{opacity:1;} }
+  @keyframes petalFall{
+    0%{ transform:translateY(-10vh) translateX(0) rotate(0deg); opacity:0; }
+    8%{ opacity:.8; }
+    92%{ opacity:.6; }
+    100%{ transform:translateY(112vh) translateX(var(--drift,40px)) rotate(220deg); opacity:0; }
+  }
+  @keyframes cardIn{ to{ opacity:1; transform:translateY(0) scale(1); } }
+  @keyframes glowPulse{
+    0%,100%{ text-shadow:0 0 14px rgba(255,179,198,.3); }
+    50%{ text-shadow:0 0 26px rgba(255,179,198,.55); }
+  }
+  @keyframes pulseDot{
+    0%,100%{ box-shadow:0 0 6px var(--online); }
+    50%{ box-shadow:0 0 14px var(--online); }
+  }
+  @keyframes blink{ 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
+  @keyframes spin{ from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+
+  @media (max-width:480px){
+    body{ padding:52px 14px 36px; }
+    .profile-card{ padding:0 18px 18px; }
+    .avatar-box{ width:92px; height:92px; }
+    .avatar-wrap{ margin-top:-42px; }
+    .username{ font-size:1.4rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .star,.petal,.username,.cursor-blink,.avatar-dot,.mini-dot{ animation:none !important; }
+    .card{ animation:none !important; opacity:1 !important; transform:none !important; }
+  }
+</style>
 </head>
 <body>
-  <div class="wallpaper"></div>
-  <canvas id="matrix"></canvas>
-  <div class="topbar">
-    <div><span>⬡</span> hpyrland</div>
-    <div><span id="top-time"></span></div>
-  </div>
-  <div class="desktop">
-    <div class="glass fetch-widget">
-      <div class="fetch-header">
-        <div class="arch-logo">⬡</div>
-        <div>
-          <div class="fetch-user">Hpyrland</div>
-          <div class="fetch-host">hpyrland.github.io</div>
+
+  <div class="grain"></div>
+  <div class="stars" id="stars"></div>
+  <div class="petals" id="petals"></div>
+  <svg class="mountains" viewBox="0 0 1440 300" preserveAspectRatio="none" aria-hidden="true">
+    <polygon class="mtn-back" points="0,300 0,210 100,160 200,210 320,150 430,200 540,140 650,195 760,150 880,205 990,155 1100,200 1220,160 1330,205 1440,175 1440,300"></polygon>
+    <polygon class="mtn-front" points="0,300 0,250 80,270 170,205 260,255 350,195 450,245 540,185 630,235 720,180 820,230 920,175 1020,225 1120,190 1220,240 1320,200 1420,235 1440,220 1440,300"></polygon>
+  </svg>
+
+  <main class="profile-wrap">
+
+    <section class="card profile-card">
+      <div class="avatar-wrap">
+        <div class="avatar-box">
+          <div class="avatar-ring">
+            <div class="avatar">
+              <svg class="hex-mark" viewBox="0 0 100 100" aria-hidden="true">
+                <polygon points="50,6 90,28 90,72 50,94 10,72 10,28"></polygon>
+              </svg>
+            </div>
+          </div>
+          <span class="avatar-dot" title="Online"></span>
         </div>
       </div>
-      <div class="fetch-divider"></div>
-      <div class="fetch-row"><span class="fetch-key">OS</span><span class="fetch-val">Arch Linux x86_64</span></div>
-      <div class="fetch-row"><span class="fetch-key">WM</span><span class="fetch-val">Hyprland (soon™)</span></div>
-      <div class="fetch-row"><span class="fetch-key">Shell</span><span class="fetch-val">zsh + oh-my-zsh</span></div>
-      <div class="fetch-row"><span class="fetch-key">Term</span><span class="fetch-val">Kitty</span></div>
-      <div class="fetch-row"><span class="fetch-key">Theme</span><span class="fetch-val">Sakura & Black</span></div>
-      <div class="fetch-row"><span class="fetch-key">Game</span><span class="fetch-val">Counter-Strike</span></div>
-    </div>
-    <div class="glass clock-widget">
-      <div class="clock-time" id="clock">00:00:00</div>
-      <div class="clock-date" id="date">loading...</div>
-    </div>
-    <div class="glass info-widget">
-      <div class="info-title">// about</div>
-      <div class="tag-grid">
-        <div class="tag">Arch Linux</div>
-        <div class="tag">WSL</div>
-        <div class="tag clickable" id="cs-tag">Counter-Strike 🎯</div>
-        <div class="tag">Hyprland</div>
-        <div class="tag">Terminal Ricer</div>
-        <div class="tag">Open Source</div>
-        <div class="tag">Fastfetch</div>
-        <div class="tag">Zsh</div>
+
+      <h1 class="username">Hpyrland</h1>
+      <p class="bio">Arch Linux enjoyer. Running Hyprland <span class="soon">(soon™)</span>. Building something cool, one config at a time.</p>
+
+      <div class="status-pill">
+        <div class="mini-avatar">
+          <svg viewBox="0 0 100 100" aria-hidden="true"><polygon points="50,6 90,28 90,72 50,94 10,72 10,28"></polygon></svg>
+          <span class="mini-dot"></span>
+        </div>
+        <div class="status-main">
+          <div class="status-top">
+            <span class="status-name">Hpyrland</span>
+            <span class="badge arch">ARCH</span>
+            <span class="badge verified">
+              <svg viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><path d="M5 13l4 4L19 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              verified
+            </span>
+          </div>
+          <div class="status-sub">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true">
+              <path d="M3 14v-2a9 9 0 0 1 18 0v2"/><rect x="1" y="14" width="6" height="7" rx="2"/><rect x="17" y="14" width="6" height="7" rx="2"/>
+            </svg>
+            <span class="status-text">now playing: lofi hyprland beats</span>
+            <span class="cursor-blink"></span>
+          </div>
+        </div>
       </div>
-      <div class="status-line"><div class="pulse"></div>building something cool...</div>
-      <div class="links"><a href="https://github.com/Hpyrland" target="_blank">github</a></div>
-    </div>
-    <div class="glass cava-widget" id="cava"></div>
-  </div>
 
-  <div id="cs-overlay"></div>
-  <div id="cs-popup">
-    <div class="cs-popup-title">🎯 My CS Crosshair</div>
-    <div class="cs-popup-sub">click outside to close</div>
-    <div id="cs-preview"></div>
-    <div class="cs-row">
-      <div class="cs-label-row"><span class="cs-label">Length</span><span class="cs-val" id="val-length">10</span></div>
-      <input type="range" min="2" max="50" value="10" id="slider-length">
-    </div>
-    <div class="cs-row">
-      <div class="cs-label-row"><span class="cs-label">Thickness</span><span class="cs-val" id="val-thickness">2</span></div>
-      <input type="range" min="1" max="10" value="2" id="slider-thickness">
-    </div>
-    <div class="cs-row">
-      <div class="cs-label-row"><span class="cs-label">Gap</span><span class="cs-val" id="val-gap">4</span></div>
-      <input type="range" min="0" max="20" value="4" id="slider-gap">
-    </div>
-    <div class="cs-row">
-      <div class="cs-label-row"><span class="cs-label">Opacity</span><span class="cs-val" id="val-opacity">1</span></div>
-      <input type="range" min="0.1" max="1" step="0.1" value="1" id="slider-opacity">
-    </div>
-    <span class="cs-label">Color</span>
-    <div class="cs-palette" id="cs-palette"></div>
-    <button class="cs-close" id="cs-close">✕  close</button>
-  </div>
+      <nav class="socials" aria-label="Social links">
+        <a class="social-btn" href="https://github.com/Hpyrland" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+        <a class="social-btn" href="#" target="_blank" rel="noopener" aria-label="Discord"><i class="fa-brands fa-discord"></i></a>
+        <a class="social-btn" href="#" target="_blank" rel="noopener" aria-label="Twitch"><i class="fa-brands fa-twitch"></i></a>
+        <a class="social-btn" href="https://hpyrland.github.io/" aria-label="Home"><i class="fa-solid fa-house"></i></a>
+      </nav>
 
-  <script>
-    // Clock
-    function updateClock() {
-      const now = new Date();
-      const pad = n => String(n).padStart(2,'0');
-      document.getElementById('clock').textContent = pad(now.getHours())+':'+pad(now.getMinutes())+':'+pad(now.getSeconds());
-      document.getElementById('top-time').textContent = pad(now.getHours())+':'+pad(now.getMinutes());
-      const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-      const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-      document.getElementById('date').textContent = days[now.getDay()]+'  '+months[now.getMonth()]+' '+now.getDate()+'  '+now.getFullYear();
+      <div class="views">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true">
+          <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/>
+        </svg>
+        <span id="viewCount">0</span>
+      </div>
+    </section>
+
+    <section class="card player-card">
+      <div class="vinyl" id="vinyl"></div>
+      <div class="track-info">
+        <p class="track-title">lofi beats to rice hyprland to</p>
+        <p class="track-artist">chillhop dev radio</p>
+        <div class="progress-row">
+          <span class="time" id="elapsed">0:00</span>
+          <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+          <span class="time" id="total">0:29</span>
+        </div>
+      </div>
+      <div class="controls">
+        <button class="ctrl-btn" id="prevBtn" aria-label="Previous">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="transform:scaleX(-1)" aria-hidden="true"><path d="M6 5l10 7-10 7V5Zm12 0h2v14h-2V5Z"/></svg>
+        </button>
+        <button class="ctrl-btn play" id="playBtn" aria-label="Play">
+          <svg class="icon-play" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7L8 5Z"/></svg>
+          <svg class="icon-pause" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+        </button>
+        <button class="ctrl-btn" id="nextBtn" aria-label="Next">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M6 5l10 7-10 7V5Zm12 0h2v14h-2V5Z"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <p class="footnote">⬡ crafted for hpyrland.github.io</p>
+  </main>
+
+<script>
+  // ---- starfield ----
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 90; i++) {
+    const s = document.createElement('span');
+    s.className = 'star';
+    const size = (Math.random() * 1.6 + 0.6).toFixed(2);
+    s.style.width = size + 'px';
+    s.style.height = size + 'px';
+    s.style.left = (Math.random() * 100).toFixed(2) + '%';
+    s.style.top = (Math.random() * 68).toFixed(2) + '%';
+    s.style.animationDuration = (Math.random() * 3 + 2).toFixed(2) + 's';
+    s.style.animationDelay = (Math.random() * 4).toFixed(2) + 's';
+    starsEl.appendChild(s);
+  }
+
+  // ---- sakura petals ----
+  const petalsEl = document.getElementById('petals');
+  for (let i = 0; i < 14; i++) {
+    const p = document.createElement('span');
+    p.className = 'petal';
+    p.style.left = (Math.random() * 100).toFixed(2) + '%';
+    p.style.setProperty('--drift', (Math.random() * 120 - 60).toFixed(0) + 'px');
+    p.style.animationDuration = (Math.random() * 10 + 14).toFixed(2) + 's';
+    p.style.animationDelay = (Math.random() * 18).toFixed(2) + 's';
+    const scale = (Math.random() * 0.6 + 0.6).toFixed(2);
+    p.style.transform = 'scale(' + scale + ')';
+    petalsEl.appendChild(p);
+  }
+
+  // ---- view counter (cosmetic count-up, resets each visit — no persistence) ----
+  function animateCount(el, target, duration) {
+    const start = performance.now();
+    function tick(now) {
+      const p = Math.min(1, (now - start) / duration);
+      el.textContent = Math.floor(p * target);
+      if (p < 1) requestAnimationFrame(tick); else el.textContent = target;
     }
-    setInterval(updateClock,1000); updateClock();
+    requestAnimationFrame(tick);
+  }
+  animateCount(document.getElementById('viewCount'), Math.floor(Math.random() * 60) + 15, 900);
 
-    // Cava
-    const cava = document.getElementById('cava');
-    for(let i=0;i<40;i++){
-      const b=document.createElement('div'); b.className='bar';
-      const mn=Math.random()*20+5,mx=Math.random()*55+20,dur=(Math.random()*0.8+0.4).toFixed(2);
-      b.style.cssText='--min:'+mn+'px;--max:'+mx+'px;--dur:'+dur+'s;height:'+mn+'px;animation-delay:'+(Math.random()*0.5).toFixed(2)+'s';
-      cava.appendChild(b);
+  // ---- now-playing widget ----
+  (function () {
+    const playBtn = document.getElementById('playBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const vinyl = document.getElementById('vinyl');
+    const fill = document.getElementById('progressFill');
+    const elapsedEl = document.getElementById('elapsed');
+    const totalSeconds = 29;
+    let progress = 0;
+    let playing = false;
+    let timer = null;
+
+    function fmt(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return m + ':' + String(s).padStart(2, '0');
     }
-
-    // Matrix
-    const canvas=document.getElementById('matrix');
-    const ctx=canvas.getContext('2d');
-    canvas.width=window.innerWidth; canvas.height=window.innerHeight;
-    const cols=Math.floor(canvas.width/20);
-    const drops=Array(cols).fill(1);
-    const chars='アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789ABCDEF';
-    function drawMatrix(){
-      ctx.fillStyle='rgba(13,10,12,0.05)'; ctx.fillRect(0,0,canvas.width,canvas.height);
-      ctx.fillStyle='#f4b8c8'; ctx.font='14px JetBrains Mono';
-      drops.forEach((y,i)=>{
-        ctx.fillText(chars[Math.floor(Math.random()*chars.length)],i*20,y*20);
-        if(y*20>canvas.height&&Math.random()>0.975)drops[i]=0; drops[i]++;
-      });
+    function render() {
+      fill.style.width = progress + '%';
+      elapsedEl.textContent = fmt((progress / 100) * totalSeconds);
     }
-    setInterval(drawMatrix,50);
-    window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
-
-    // Crosshair popup
-    var csConfig = { length:10, thickness:2, gap:4, opacity:1, color:'#f4b8c8' };
-
-    var swatchColors = [
-      '#ffffff','#f4b8c8','#fdd5df','#ffaec0',
-      '#ff4444','#00ff00','#4fc3f7','#ffff00',
-      '#ff8800','#ff44ff','#00ffff','#aaaaaa'
-    ];
-
-    var paletteEl = document.getElementById('cs-palette');
-    swatchColors.forEach(function(c){
-      var s = document.createElement('div');
-      s.className = 'cs-swatch' + (csConfig.color===c?' active':'');
-      s.style.background = c;
-      s.onclick = function(){
-        csConfig.color = c;
-        paletteEl.querySelectorAll('.cs-swatch').forEach(function(x){ x.classList.remove('active'); });
-        s.classList.add('active');
-        renderPreview();
-      };
-      paletteEl.appendChild(s);
-    });
-
-    function renderPreview(){
-      var box = document.getElementById('cs-preview');
-      box.innerHTML = '';
-      var w = box.offsetWidth || 266;
-      var h = box.offsetHeight || 76;
-      var cx = w/2;
-      var cy = h/2;
-      var len = csConfig.length;
-      var th  = csConfig.thickness;
-      var gap = csConfig.gap;
-      var col = csConfig.color;
-      var op  = csConfig.opacity;
-      var lines = [
-        [cy-gap-len, cx-th/2, th,  len],
-        [cy+gap,     cx-th/2, th,  len],
-        [cy-th/2,    cx-gap-len, len, th],
-        [cy-th/2,    cx+gap,     len, th]
-      ];
-      lines.forEach(function(a){
-        var d = document.createElement('div');
-        d.style.position   = 'absolute';
-        d.style.top        = a[0]+'px';
-        d.style.left       = a[1]+'px';
-        d.style.width      = a[2]+'px';
-        d.style.height     = a[3]+'px';
-        d.style.backgroundColor = col;
-        d.style.opacity    = String(op);
-        box.appendChild(d);
-      });
+    function tick() {
+      progress += 100 / (totalSeconds * 4);
+      if (progress >= 100) progress = 0;
+      render();
     }
-
-    ['length','thickness','gap','opacity'].forEach(function(key){
-      var slider = document.getElementById('slider-'+key);
-      var valEl  = document.getElementById('val-'+key);
-      slider.oninput = function(){
-        csConfig[key] = parseFloat(this.value);
-        valEl.textContent = this.value;
-        renderPreview();
-      };
-    });
-
-    document.getElementById('cs-tag').onclick = function(){
-      document.getElementById('cs-overlay').style.display = 'block';
-      document.getElementById('cs-popup').style.display   = 'block';
-      setTimeout(renderPreview, 50);
-    };
-
-    function closePopup(){
-      document.getElementById('cs-overlay').style.display = 'none';
-      document.getElementById('cs-popup').style.display   = 'none';
+    function setPlaying(v) {
+      playing = v;
+      clearInterval(timer);
+      if (playing) {
+        vinyl.classList.add('spinning');
+        timer = setInterval(tick, 250);
+        playBtn.classList.add('is-playing');
+        playBtn.setAttribute('aria-label', 'Pause');
+      } else {
+        vinyl.classList.remove('spinning');
+        playBtn.classList.remove('is-playing');
+        playBtn.setAttribute('aria-label', 'Play');
+      }
     }
-    document.getElementById('cs-close').onclick   = closePopup;
-    document.getElementById('cs-overlay').onclick = closePopup;
-  </script>
+    playBtn.addEventListener('click', () => setPlaying(!playing));
+    prevBtn.addEventListener('click', () => { progress = Math.max(0, progress - 15); render(); });
+    nextBtn.addEventListener('click', () => { progress = Math.min(100, progress + 15); render(); });
+    render();
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!prefersReduced) setPlaying(true);
+  })();
+</script>
 </body>
 </html>
